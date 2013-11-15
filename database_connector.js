@@ -3,13 +3,17 @@ var DbConnector = function(host, user, password) {
     this.host = host;
     this.user = user;
     this.password = password;
-    this.makeConnection = function() {
-        return mysql.createConnection({
-          host     : this.host,
-          user     : this.user,
-          password : this.password,
+    var configs = {
+          host     : host,
+          user     : user,
+          password : password,
           database : 'foodpantry'
-        });
+        };
+    if(process.env.MYSQL_PORT_NODE) { 
+      configs.port = process.env.MYSQL_PORT_NODE;
+    }
+    this.makeConnection = function() {
+        return mysql.createConnection(configs);
     }
 };
 
