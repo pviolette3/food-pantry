@@ -8,6 +8,7 @@ var DbConnector = function(host, user, password) {
           host     : this.host,
           user     : this.user,
           password : this.password,
+          database : 'foodpantry'
         });
     }
 };

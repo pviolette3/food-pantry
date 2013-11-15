@@ -6,8 +6,8 @@
 var express = require('express');
 var http = require('http');
 var path = require('path');
-
-
+var db = require('./database_connector');
+var dbCon = new db.DbConnector('localhost', 'foodpantry', 'cs4400');
 var app = express();
 
 // all environments
@@ -30,6 +30,17 @@ if ('development' == app.get('env')) {
 
 app.get('/', function(req, res) {
     res.render('index', {name : 'food pantry'});
+});
+
+app.get('/users', function(req, res) {
+    var con = dbCon.makeConnection();
+    con.connect();
+    con.query('SELECT * FROM Client', function(err, rows, fields) {
+        if(err) {throw err;}
+        res.send(rows);
+    });
+    con.end();
+
 });
 
 http.createServer(app).listen(app.get('port'), function(){
