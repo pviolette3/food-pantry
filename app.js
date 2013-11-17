@@ -153,6 +153,10 @@ app.get('/reports/hunger-relief', function(req, res) {
     res.send('hunger relief report');
 });
 
+app.get('/reports/service-report', function(req, res) {
+    res.send('service report lolol')
+});
+
 app.get('/bags', function(req, res) {
 
 });
