@@ -35,12 +35,11 @@ app.get('/', function(req, res) {
 app.get('/users', function(req, res) {
     var con = dbCon.makeConnection();
     con.connect();
-    con.query('SELECT * FROM Client', function(err, rows, fields) {
+    con.query('SELECT Name FROM Client', function(err, rows, fields) {
         if(err) {throw err;}
-        res.send(rows);
+        res.render('user', {data : rows});
     });
     con.end();
-
 });
 
 http.createServer(app).listen(app.get('port'), function(){

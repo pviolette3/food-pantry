@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+
 var DbConnector = function(host, user, password) {
     this.host = host;
     this.user = user;
