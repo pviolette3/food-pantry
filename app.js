@@ -59,14 +59,9 @@ app.get('/users/search/:clientName--:telephone', function(req, res)
 	if(clientName
     var con = dbCon.makeConnection();
     con.connect();
-<<<<<<< HEAD
     con.query('SELECT * FROM Client WHERE Name = ' + req.params.clientName , 
 	
-	
 	function(err, rows, fields) {
-=======
-    con.query('SELECT Name FROM Client', function(err, rows, fields) {
->>>>>>> 5ca31264562e30e0c8bcd21d6b5c7c93d8130bb1
         if(err) {throw err;}
         res.render('user', {data : rows});
     });
