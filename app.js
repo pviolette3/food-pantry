@@ -27,6 +27,13 @@ var isAuthenticated =  function(req) {
     return req.cookies && req.cookies.user;
 }
 
+var sql = function(query, callback) {
+    var con = dbCon.makeConnection();
+    con.connect();
+    con.query(query, callback);
+    con.end();
+}
+
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
@@ -44,15 +51,11 @@ app.get('/', function(req, res) {
 //New Inventory, Monthly Service Report, Grocery List Report
 
 app.get('/clients', function(req, res) {
-		
-		var con = dbCon.makeConnection();
-		con.connect();
-		con.query('SELECT * FROM Client', function(err, rows, fields)
-		{
-			if(err){throw err;}
-			res.send(rows);
-		});
-	con.end();
+	sql('SELECT * FROM Client', function(err, rows, fields)
+	{
+		if(err){throw err;}
+		res.send(rows);
+	});
 });
 
 app.get('/users/search/:clientName--:telephone', function(req, res) 
@@ -95,10 +98,11 @@ app.post('/login', function(req, res) {
 });
 
 app.get('/home', function(req, res) {
-    res.send('home');
+    return res.send('home');
 });
 
 app.get('/pickups', function(req, res) {
+
     res.send('all the pickups');
 });
 
