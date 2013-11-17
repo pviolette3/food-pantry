@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -42,6 +41,19 @@ app.get('/users', function(req, res) {
     con.end();
 
 });
+
+
+
+//NEED:
+//Menu, Login, Home, Pickups, Pickup Confirmation, 
+//Drop Off, New Drop Off, Clients, Clients with Search (Search)
+//New Client, Add Additional Family Members for Client, 
+//Hunger Relief Bag List, Edit Bag, Product List (Search), 
+//New Inventory, Monthly Service Report, Grocery List Report
+
+
+
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
