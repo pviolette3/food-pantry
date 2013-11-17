@@ -24,7 +24,7 @@ app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
 var isAuthenticated =  function(req) {
-    return !(typeof req.cookies.user === 'undefined');
+    return req.cookies && req.cookies.user;
 }
 
 // development only
@@ -33,7 +33,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', function(req, res) {
-    res.render('index', {name : 'food pantry'});
+    return res.redirect('/login');
 });
 
 //NEED:
@@ -43,24 +43,21 @@ app.get('/', function(req, res) {
 //Hunger Relief Bag List, Edit Bag, Product List (Search), 
 //New Inventory, Monthly Service Report, Grocery List Report
 
-app.get('/clients', function(req, res)
-	{
+app.get('/clients', function(req, res) {
 		
 		var con = dbCon.makeConnection();
 		con.connect();
 		con.query('SELECT * FROM Client', function(err, rows, fields)
-		{	
+		{
 			if(err){throw err;}
 			res.send(rows);
 		});
-		
-	});
-	con.end();	
+	con.end();
 });
 
 app.get('/users/search/:clientName--:telephone', function(req, res) 
 {
-	if(clientName
+//	if(clientName)
     var con = dbCon.makeConnection();
     con.connect();
     con.query('SELECT * FROM Client WHERE Name = ' + req.params.clientName ,
@@ -72,25 +69,28 @@ app.get('/users/search/:clientName--:telephone', function(req, res)
     con.end();
 });
 
+app.get('/login', function(req, res) {
+    return res.redirect('/logIn.html');
+});
+
 app.post('/login', function(req, res) {
-    if(!isAuthenticated(req)) {
+    if(req.cookies && req.cookies.user) {
+        return res.redirect('/home');
+    }else { // see if they log in properly
         var con = dbCon.makeConnection();
         con.connect();
-        con.query("EXISTS SELECT * FROM User WHERE UserName='" + 
-            req.params.username + "' AND Password='" + req.params.password + "'"
+        con.query("SELECT * FROM User WHERE UserName='" + 
+            req.body.username + "' AND Password='" + req.body.password + "'",
         function(err, rows) {
             if(err) throw err;
-            if(rows[0]) {
+            if(rows.length > 0) {
                 res.cookie('user', 'yes'); //success
                 return res.redirect('/home');
             }else {
-                res.send('You need to re login');
                 return res.redirect('/login');
             }
         });
-    }
-    else {
-        return res.redirect('/home');
+        con.end();
     }
 });
 
@@ -165,6 +165,6 @@ app.put('/bags/:bagname', function(req, res) {
 });
 
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+http.createServer(app).listen(app.get('port'), function() {
+    console.log('Express server listening on port ' + app.get('port'));
 });
