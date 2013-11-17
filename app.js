@@ -24,7 +24,7 @@ app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
 var isAuthenticated =  function(req) {
-
+    return !(typeof req.cookies.user === 'undefined');
 }
 
 // development only
@@ -63,7 +63,7 @@ app.get('/users/search/:clientName--:telephone', function(req, res)
 	if(clientName
     var con = dbCon.makeConnection();
     con.connect();
-    con.query('SELECT * FROM Client WHERE Name = ' + req.params.clientName , 
+    con.query('SELECT * FROM Client WHERE Name = ' + req.params.clientName ,
 	
 	function(err, rows, fields) {
         if(err) {throw err;}
@@ -72,10 +72,27 @@ app.get('/users/search/:clientName--:telephone', function(req, res)
     con.end();
 });
 
-app.get('/login', function(req, res) {
-
-    res.send("Login lolol");
-})
+app.post('/login', function(req, res) {
+    if(!isAuthenticated(req)) {
+        var con = dbCon.makeConnection();
+        con.connect();
+        con.query("EXISTS SELECT * FROM User WHERE UserName='" + 
+            req.params.username + "' AND Password='" + req.params.password + "'"
+        function(err, rows) {
+            if(err) throw err;
+            if(rows[0]) {
+                res.cookie('user', 'yes'); //success
+                return res.redirect('/home');
+            }else {
+                res.send('You need to re login');
+                return res.redirect('/login');
+            }
+        });
+    }
+    else {
+        return res.redirect('/home');
+    }
+});
 
 app.get('/home', function(req, res) {
     res.send('home');
@@ -146,19 +163,6 @@ app.put('/bags/:bagname', function(req, res) {
 
     res.send('your bag was updated');
 });
-
-app.get('', function(req, res) {
-
-});
-
-
-//NEED:
-//Menu, Login, Home, Pickups, Pickup Confirmation, 
-//Drop Off, New Drop Off, Clients, Clients with Search (Search)
-//New Client, Add Additional Family Members for Client, 
-//Hunger Relief Bag List, Edit Bag, Product List (Search), 
-//New Inventory, Monthly Service Report, Grocery List Report
-
 
 
 http.createServer(app).listen(app.get('port'), function(){
