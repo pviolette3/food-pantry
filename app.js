@@ -19,6 +19,7 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
+app.use(express.bodyParser());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -35,10 +36,36 @@ app.get('/', function(req, res) {
     res.render('index', {name : 'food pantry'});
 });
 
-app.get('/users', function(req, res) {
+//NEED:
+//Menu, Login, Home, Pickups, Pickup Confirmation, 
+//Drop Off, New Drop Off, Clients, Clients with Search (Search)
+//New Client, Add Additional Family Members for Client, 
+//Hunger Relief Bag List, Edit Bag, Product List (Search), 
+//New Inventory, Monthly Service Report, Grocery List Report
+
+app.get('/clients', function(req, res)
+	{
+		
+		var con = dbCon.makeConnection();
+		con.connect();
+		con.query('SELECT * FROM Client', function(err, rows, fields)
+		{	
+			if(err){throw err;}
+			res.send(rows);
+		});
+		
+	});
+	con.end();	
+});
+
+app.get('/users/search/:clientName--:telephone', function(req, res) 
+{
+	if(clientName
     var con = dbCon.makeConnection();
     con.connect();
-    con.query('SELECT Name FROM Client', function(err, rows, fields) {
+    con.query('SELECT * FROM Client WHERE Name = ' + req.params.clientName , 
+	
+	function(err, rows, fields) {
         if(err) {throw err;}
         res.render('user', {data : rows});
     });
@@ -131,8 +158,6 @@ app.get('', function(req, res) {
 //New Client, Add Additional Family Members for Client, 
 //Hunger Relief Bag List, Edit Bag, Product List (Search), 
 //New Inventory, Monthly Service Report, Grocery List Report
-
-
 
 
 
