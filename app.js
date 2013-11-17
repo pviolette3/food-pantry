@@ -22,6 +22,10 @@ app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
+var isAuthenticated =  function(req) {
+
+}
+
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
@@ -42,6 +46,7 @@ app.get('/users', function(req, res) {
 });
 
 app.get('/login', function(req, res) {
+
     res.send("Login lolol");
 })
 
@@ -105,7 +110,7 @@ app.get('/bags', function(req, res) {
 });
 
 
-app.get('/bag/edit', function(req, res) {
+app.get('/bag/:bagname/edit', function(req, res) {
     res.send('the form for editing a bag');
 });
 
@@ -114,6 +119,11 @@ app.put('/bags/:bagname', function(req, res) {
 
     res.send('your bag was updated');
 });
+
+app.get('', function(req, res) {
+
+});
+
 
 //NEED:
 //Menu, Login, Home, Pickups, Pickup Confirmation, 
