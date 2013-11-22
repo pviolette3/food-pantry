@@ -141,6 +141,7 @@ app.post('/pickups', function(req, res) {
 });
 
 app.get('/dropoffs', function(req, res) {
+		
   res.send('all the dropoffs');
 });
 
@@ -177,9 +178,10 @@ app.post('/clients/:clientid/fam', function(req, res) {
 });
 
 app.get('/reports/hunger-relief', function(req, res) {
+	
     res.send('hunger relief report');
 });
-
+	
 app.get('/reports/service', function(req, res) {
     res.send('here is the service report');
 });
@@ -200,7 +202,16 @@ app.put('/bags/:bagname', function(req, res) {
 });
 
 app.get('/products', function(req, res) {
-  res.send("here's all the products");
+	
+	var con = dbCon.makeConnection();
+	con.connect();
+	con.query('CALL GetProductList()',
+			function(err, rows, field)
+			{
+				if(err) { throw err; }
+				res.send(rows);
+			});
+	con.end();
 });
 
 http.createServer(app).listen(app.get('port'), function() {
