@@ -23,10 +23,6 @@ app.use(express.bodyParser());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
-var isAuthenticated =  function(req) {
-    return req.cookies && req.cookies.user;
-}
-
 var sql = function(query, callback) {
     var con = dbCon.makeConnection();
     con.connect();
@@ -40,7 +36,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', function(req, res) {
-    return res.redirect('/login');
+    return res.redirect('/home');
 });
 
 //NEED:
@@ -50,9 +46,7 @@ app.get('/', function(req, res) {
 //Hunger Relief Bag List, Edit Bag, Product List (Search), 
 //New Inventory, Monthly Service Report, Grocery List Report
 
-app.get('/users', function(req, res)
-	{
-		
+app.get('/users', function(req, res) {
 		var con = dbCon.makeConnection();
 		con.connect();
 		con.query('SELECT * FROM Client', function(err, rows, fields)
@@ -60,9 +54,7 @@ app.get('/users', function(req, res)
 			if(err){throw err;}
 			res.send(rows);
 		});
-		
 		con.end();	
-		
 	});
 
 app.get('/clients', function(req, res) {
@@ -121,11 +113,10 @@ app.post('/login', function(req, res) {
 });
 
 app.get('/home', function(req, res) {
-    return res.send('home');
+    return res.redirect('/home.html');
 });
 
 app.get('/pickups', function(req, res) {
-
     res.send('all the pickups');
 });
 
@@ -136,6 +127,10 @@ app.get('/pickup/new', function(req, res) {
 app.post('/pickups', function(req, res) {
     // update db with bag pickup
     res.send('the bag pickup was recorded');
+});
+
+app.get('/dropoffs', function(req, res) {
+  res.send('all the dropoffs');
 });
 
 app.post('/dropoffs', function(req, res) {
@@ -176,14 +171,13 @@ app.get('/reports/hunger-relief', function(req, res) {
     res.send('hunger relief report');
 });
 
-app.get('/reports/service-report', function(req, res) {
-    res.send('service report lolol')
+app.get('/reports/service', function(req, res) {
+    res.send('here is the service report')
 });
 
 app.get('/bags', function(req, res) {
-
+  res.send('got some bags');
 });
-
 
 app.get('/bag/:bagname/edit', function(req, res) {
     res.send('the form for editing a bag');
@@ -194,6 +188,9 @@ app.put('/bags/:bagname', function(req, res) {
     res.send('your bag was updated');
 });
 
+app.get('/products', function(req, res) {
+  res.send("here's all the products");
+});
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));
