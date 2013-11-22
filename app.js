@@ -61,7 +61,7 @@ app.get('/clients', function(req, res) {
 	sql('SELECT * FROM Client', function(err, rows, fields)
 	{
 		if(err){throw err;}
-		res.send(rows);
+		return res.render('clients/list', {rows: rows});
 	});
 });
 
@@ -82,11 +82,28 @@ app.get('/clients/search/:clientName--:telephone', function(req, res)
 		{
 			if(err) {throw err;}
 			res.send(rows);
-			//res.render('users', {data : rows});
 		});
     con.end();
 });
 
+app.get('/clients/new', function(req, res) {
+   res.render('clients/new');
+});
+
+app.post('/clients', function(req, res) {
+    // save the new client from post params
+    res.send('new client added');
+});
+
+app.get('/clients/:clientid/fam/new', function(req, res) {
+    req.params.clientid;
+    res.send('form for addding a new family member');
+});
+
+app.post('/clients/:clientid/fam', function(req, res) {
+    // save the family members
+    res.send('updated the client with the family members');
+});
 app.get('/login', function(req, res) {
     return res.redirect('/logIn.html');
 });
@@ -150,32 +167,6 @@ app.post('/dropoffs', function(req, res) {
     res.send('created new dropoff');
 });
 
-app.get('/clients', function(req, res) {
-    sql('SELECT * FROM Clients', function(err, rows) {
-        if(err) throw err;
-        res.render('clients', rows);
-    });
-    res.send('all the clients');
-});
-
-app.get('/clients/new', function(req, res) {
-    res.send('form for making new client');
-});
-
-app.post('/clients', function(req, res) {
-    // save the new client from post params
-    res.send('new client added');
-});
-
-app.get('/clients/:clientid/fam/new', function(req, res) {
-    req.params.clientid;
-    res.send('form for addding a new family member');
-});
-
-app.post('/clients/:clientid/fam', function(req, res) {
-    // save the family members
-    res.send('updated the client with the family members');
-});
 
 app.get('/reports/hunger-relief', function(req, res) {
 	
