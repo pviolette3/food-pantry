@@ -99,7 +99,8 @@ app.get('/login', function(req, res) {
     return res.redirect('/logIn.html');
 });
 
-app.post('/login', function(req, res) {
+app.post('/login', function(req, res) 
+{
     if(req.cookies && req.cookies.user) {
         return res.redirect('/home');
     }else { // see if they log in properly
@@ -124,9 +125,18 @@ app.get('/home', function(req, res) {
     return res.send('home');
 });
 
-app.get('/pickups', function(req, res) {
-
-    res.send('all the pickups');
+app.get('/pickups:day', function(req, res) 
+{
+	var con = dbCon.makeConnection();
+	var day = req.params.day;//document.getElementById('form').value;
+	con.connect();
+	con.query('CALL GetPickupSignIn("' + day + '")',
+			function(err, rows, field)
+			{
+				if(err) { throw err; }
+				res.send(rows);
+			});
+	con.end();
 });
 
 app.get('/pickup/new', function(req, res) {
@@ -176,8 +186,9 @@ app.get('/reports/hunger-relief', function(req, res) {
     res.send('hunger relief report');
 });
 
-app.get('/reports/service-report', function(req, res) {
-    res.send('service report lolol')
+app.get('/reports/service-report', function(req, res) 
+{
+    res.send('service report lolol');
 });
 
 app.get('/bags', function(req, res) {
@@ -185,7 +196,8 @@ app.get('/bags', function(req, res) {
 });
 
 
-app.get('/bag/:bagname/edit', function(req, res) {
+app.get('/bag/:bagname/edit', function(req, res) 
+{
     res.send('the form for editing a bag');
 });
 
