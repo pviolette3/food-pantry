@@ -39,7 +39,7 @@ app.get('/', function(req, res) {
 //Hunger Relief Bag List, Edit Bag, Product List (Search), 
 //New Inventory, Monthly Service Report, Grocery List Report
 
-app.get('/clients', function(req, res)
+app.get('/users', function(req, res)
 	{
 		
 		var con = dbCon.makeConnection();
@@ -50,21 +50,29 @@ app.get('/clients', function(req, res)
 			res.send(rows);
 		});
 		
+		con.end();	
+		
 	});
-	con.end();	
-});
 
-app.get('/users/search/:clientName--:telephone', function(req, res) 
-{
-	if(clientName
+app.get('/users/:clientName/:telephone', function(req, res) 
+{		
     var con = dbCon.makeConnection();
     con.connect();
-    con.query('SELECT * FROM Client WHERE Name = ' + req.params.clientName , 
 	
-	function(err, rows, fields) {
-        if(err) {throw err;}
-        res.render('user', {data : rows});
-    });
+	var cn = req.params.clientName;
+	var tp = req.params.telephone;
+	if(!cn)
+		cn = "";
+	if(!tp)
+		tp = "";
+	
+    con.query('CALL GetFamilyInfoBySearch("' + cn + '", "' + tp + '");',  
+		function(err, rows, fields) 
+		{
+			if(err) {throw err;}
+			res.send(rows);
+			//res.render('users', {data : rows});
+		});
     con.end();
 });
 
@@ -138,7 +146,6 @@ app.get('/bag/edit', function(req, res) {
 
 app.put('/bags/:bagname', function(req, res) {
     // update the bag with new values
-
     res.send('your bag was updated');
 });
 
