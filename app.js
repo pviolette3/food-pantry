@@ -65,7 +65,7 @@ app.get('/clients', function(req, res) {
 	});
 });
 
-app.get('/users/search/:clientName--:telephone', function(req, res) 
+app.get('/clients/search/:clientName--:telephone', function(req, res) 
 {
 //	if(clientName)
     var con = dbCon.makeConnection();
@@ -139,13 +139,11 @@ app.post('/dropoffs', function(req, res) {
 });
 
 app.get('/clients', function(req, res) {
-    // list all clients
+    sql('SELECT * FROM Clients', function(err, rows) {
+        if(err) throw err;
+        res.render('clients', rows);
+    });
     res.send('all the clients');
-});
-
-app.get('/clients/search', function(req, res) {
-    // do le search
-    res.send("this is the client you're looking for.")
 });
 
 app.get('/clients/new', function(req, res) {
