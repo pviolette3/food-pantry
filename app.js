@@ -23,10 +23,6 @@ app.use(express.bodyParser());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
-var isAuthenticated =  function(req) {
-    return req.cookies && req.cookies.user;
-}
-
 var sql = function(query, callback) {
     var con = dbCon.makeConnection();
     con.connect();
@@ -40,7 +36,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', function(req, res) {
-    return res.redirect('/login');
+    return res.redirect('/home');
 });
 
 //NEED:
@@ -50,9 +46,7 @@ app.get('/', function(req, res) {
 //Hunger Relief Bag List, Edit Bag, Product List (Search), 
 //New Inventory, Monthly Service Report, Grocery List Report
 
-app.get('/users', function(req, res)
-	{
-		
+app.get('/users', function(req, res) {
 		var con = dbCon.makeConnection();
 		con.connect();
 		con.query('SELECT * FROM Client', function(err, rows, fields)
@@ -60,9 +54,7 @@ app.get('/users', function(req, res)
 			if(err){throw err;}
 			res.send(rows);
 		});
-		
 		con.end();	
-		
 	});
 
 app.get('/clients', function(req, res) {
@@ -73,7 +65,7 @@ app.get('/clients', function(req, res) {
 	});
 });
 
-app.get('/users/search/:clientName--:telephone', function(req, res) 
+app.get('/clients/search/:clientName--:telephone', function(req, res) 
 {
 //	if(clientName)
     var con = dbCon.makeConnection();
@@ -122,10 +114,10 @@ app.post('/login', function(req, res)
 });
 
 app.get('/home', function(req, res) {
-    return res.send('home');
+    return res.redirect('/home.html');
 });
 
-app.get('/pickups:day', function(req, res) 
+app.get('/pickups:_day', function(req, res) 
 {
 	var con = dbCon.makeConnection();
 	var day = req.params.day;//document.getElementById('form').value;
@@ -148,19 +140,21 @@ app.post('/pickups', function(req, res) {
     res.send('the bag pickup was recorded');
 });
 
+app.get('/dropoffs', function(req, res) {
+  res.send('all the dropoffs');
+});
+
 app.post('/dropoffs', function(req, res) {
     // save new dropoff
     res.send('created new dropoff');
 });
 
 app.get('/clients', function(req, res) {
-    // list all clients
+    sql('SELECT * FROM Clients', function(err, rows) {
+        if(err) throw err;
+        res.render('clients', rows);
+    });
     res.send('all the clients');
-});
-
-app.get('/clients/search', function(req, res) {
-    // do le search
-    res.send("this is the client you're looking for.")
 });
 
 app.get('/clients/new', function(req, res) {
@@ -186,13 +180,12 @@ app.get('/reports/hunger-relief', function(req, res) {
     res.send('hunger relief report');
 });
 
-app.get('/reports/service-report', function(req, res) 
-{
-    res.send('service report lolol');
+app.get('/reports/service', function(req, res) {
+    res.send('here is the service report');
 });
 
 app.get('/bags', function(req, res) {
-
+  res.send('got some bags');
 });
 
 
@@ -206,6 +199,9 @@ app.put('/bags/:bagname', function(req, res) {
     res.send('your bag was updated');
 });
 
+app.get('/products', function(req, res) {
+  res.send("here's all the products");
+});
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));
