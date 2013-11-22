@@ -50,7 +50,6 @@ app.get('/', function(req, res) {
 //Hunger Relief Bag List, Edit Bag, Product List (Search), 
 //New Inventory, Monthly Service Report, Grocery List Report
 
-<<<<<<< HEAD
 app.get('/users', function(req, res)
 	{
 		
@@ -66,11 +65,6 @@ app.get('/users', function(req, res)
 		
 	});
 
-app.get('/users/:clientName/:telephone', function(req, res) 
-{		
-    var con = dbCon.makeConnection();
-    con.connect();
-=======
 app.get('/clients', function(req, res) {
 	sql('SELECT * FROM Client', function(err, rows, fields)
 	{
@@ -84,9 +78,6 @@ app.get('/users/search/:clientName--:telephone', function(req, res)
 //	if(clientName)
     var con = dbCon.makeConnection();
     con.connect();
-    con.query('SELECT * FROM Client WHERE Name = ' + req.params.clientName ,
->>>>>>> cb6415c61be2ad268d7d2f723ffb0e8f329e7f0a
-	
 	var cn = req.params.clientName;
 	var tp = req.params.telephone;
 	if(!cn)
