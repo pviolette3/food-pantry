@@ -23,13 +23,24 @@ app.use(express.bodyParser());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
+var isAuthenticated =  function(req) {
+    return req.cookies && req.cookies.user;
+}
+
+var sql = function(query, callback) {
+    var con = dbCon.makeConnection();
+    con.connect();
+    con.query(query, callback);
+    con.end();
+}
+
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
 app.get('/', function(req, res) {
-    res.render('index', {name : 'food pantry'});
+    return res.redirect('/login');
 });
 
 //NEED:
@@ -39,6 +50,7 @@ app.get('/', function(req, res) {
 //Hunger Relief Bag List, Edit Bag, Product List (Search), 
 //New Inventory, Monthly Service Report, Grocery List Report
 
+<<<<<<< HEAD
 app.get('/users', function(req, res)
 	{
 		
@@ -58,6 +70,22 @@ app.get('/users/:clientName/:telephone', function(req, res)
 {		
     var con = dbCon.makeConnection();
     con.connect();
+=======
+app.get('/clients', function(req, res) {
+	sql('SELECT * FROM Client', function(err, rows, fields)
+	{
+		if(err){throw err;}
+		res.send(rows);
+	});
+});
+
+app.get('/users/search/:clientName--:telephone', function(req, res) 
+{
+//	if(clientName)
+    var con = dbCon.makeConnection();
+    con.connect();
+    con.query('SELECT * FROM Client WHERE Name = ' + req.params.clientName ,
+>>>>>>> cb6415c61be2ad268d7d2f723ffb0e8f329e7f0a
 	
 	var cn = req.params.clientName;
 	var tp = req.params.telephone;
@@ -77,14 +105,36 @@ app.get('/users/:clientName/:telephone', function(req, res)
 });
 
 app.get('/login', function(req, res) {
-    res.send("Login lolol");
-})
+    return res.redirect('/logIn.html');
+});
+
+app.post('/login', function(req, res) {
+    if(req.cookies && req.cookies.user) {
+        return res.redirect('/home');
+    }else { // see if they log in properly
+        var con = dbCon.makeConnection();
+        con.connect();
+        con.query("SELECT * FROM User WHERE UserName='" + 
+            req.body.username + "' AND Password='" + req.body.password + "'",
+        function(err, rows) {
+            if(err) throw err;
+            if(rows.length > 0) {
+                res.cookie('user', 'yes'); //success
+                return res.redirect('/home');
+            }else {
+                return res.redirect('/login');
+            }
+        });
+        con.end();
+    }
+});
 
 app.get('/home', function(req, res) {
-    res.send('home');
+    return res.send('home');
 });
 
 app.get('/pickups', function(req, res) {
+
     res.send('all the pickups');
 });
 
@@ -135,12 +185,16 @@ app.get('/reports/hunger-relief', function(req, res) {
     res.send('hunger relief report');
 });
 
+app.get('/reports/service-report', function(req, res) {
+    res.send('service report lolol')
+});
+
 app.get('/bags', function(req, res) {
 
 });
 
 
-app.get('/bag/edit', function(req, res) {
+app.get('/bag/:bagname/edit', function(req, res) {
     res.send('the form for editing a bag');
 });
 
@@ -150,6 +204,6 @@ app.put('/bags/:bagname', function(req, res) {
 });
 
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+http.createServer(app).listen(app.get('port'), function() {
+    console.log('Express server listening on port ' + app.get('port'));
 });
