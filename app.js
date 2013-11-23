@@ -1,7 +1,3 @@
-/**
- * Module dependencies.
- */
-
 var express = require('express');
 var http = require('http');
 var path = require('path');
@@ -18,8 +14,8 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
-app.use(express.methodOverride());
-app.use(express.bodyParser());
+app.use(express.methodOverride()); //for app.put
+app.use(express.bodyParser()); // for getting post params
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -58,7 +54,7 @@ app.get('/users', function(req, res) {
 	});
 
 app.get('/clients', function(req, res) {
-	sql('SELECT * FROM Client', function(err, rows, fields)
+	sql('SELECT * FROM Client LIMIT 100', function(err, rows, fields)
 	{
 		if(err){throw err;}
 		return res.render('clients/list', {rows: rows});
@@ -91,8 +87,35 @@ app.get('/clients/new', function(req, res) {
 });
 
 app.post('/clients', function(req, res) {
-    // save the new client from post params
-    res.send('new client added');
+    var attrs = {type: [], values: []};
+    var valid_names = ['BagSignedUp', 'FirstName', 'LastName', 'Phone',
+      'Street', 'City', 'State', 'Zip', 'Apt', 'Gender', 'Start', 'PickupDay'];
+    // see which params they actually passed.
+    // TODO Validation, bc we are gonna get SQL injected like this
+    for (var param in req.body) {
+        if (req.body.hasOwnProperty(param) 
+            && (valid_names.indexOf(param) > -1)) {
+           attrs.type.push(param);
+           if(req.body[param]) { // Tests for empty string
+             attrs.values.push('"' + req.body[param] + '"');
+           }else {
+             attrs.values.push("NULL");
+           }
+        }
+    }
+    var insertSQL = "INSERT INTO Client (" + attrs.type.join(",") + ") VALUES ("
+    + attrs.values.join(",") + ");";
+    // Run the SQL
+    sql(insertSQL, function(err, rows) {
+      if(err) throw err;
+      res.send("Nice job " + JSON.stringify(rows));
+    });
+});
+
+app.get('/clients/:cid', function(req, res) {
+   sql('SELECT * FROM Client WHERE CID="' + req.params.cid + '";', function(err, rows) {
+    return res.render('clients/show', {client: rows[0]});
+   }); // callback hell :D
 });
 
 app.get('/clients/:clientid/fam/new', function(req, res) {
@@ -104,6 +127,7 @@ app.post('/clients/:clientid/fam', function(req, res) {
     // save the family members
     res.send('updated the client with the family members');
 });
+
 app.get('/login', function(req, res) {
     return res.redirect('/logIn.html');
 });

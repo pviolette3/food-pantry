@@ -1,11 +1,12 @@
 <html>
     <body>
       <h1>Clients for you sir!</h1>
+      <a href="/clients/new">Create New Client</a>
       <h4>Use control f</h4>
       <ul>
           <% for(var i=0; i < rows.length; i++) { %>
-            <li><%= JSON.stringify(rows[i]) %></li>
+            <li><a href="/clients/<%= rows[i].CID%>"><%=rows[i].FirstName + " " + rows[i].LastName %></a></li>
           <% } %>
-        </ul>
+      </ul>
     </body>
 </html>
