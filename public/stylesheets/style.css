@@ -1,8 +1,40 @@
+/* Sample Webpage Lab  style.css - Note that you need to fill this in yourself! */
+
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-size: 14px
+  font-family: arial, helvetica, sans-serif
+  color: #0073FF;
+  background-color: #000000
 }
 
-a {
-  color: #00B7FF;
+p {
+border:2px
+border-style:solid;
+border-color: #0073FF
+background-color:#FFFFFF
+color: #0073FF
 }
+
+
+legend {
+	font-size: 1.5em
+	color: #0073FF
+}
+
+h1 {
+    font-size: 2em;
+    text-shadow:5px 5px 5px #243959;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+a {
+    color: #FFFFFF
+}
+
+a:active {
+    color: #0073FF;
+}
+
+/* Other possible style blocks go here... */
