@@ -1,1 +1,5 @@
 node_modules
+.metadata
+RemoteSystemsTempFiles
+.project
+*.swp
