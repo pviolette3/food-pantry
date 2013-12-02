@@ -187,6 +187,7 @@ app.get('/reports/service', function(req, res) {
 });
 
 app.get('/bags', function(req, res) {
+	
   res.send('got some bags');
 });
 
