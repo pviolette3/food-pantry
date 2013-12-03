@@ -124,6 +124,8 @@ app.get('/pickups:_day', function(req, res)
 app.post('/pickups:fn--:ln--:tp', function(req, res) {
     // update db with bag pickup
 	
+	var con = dbCon.makeConnection();
+	
 	var fn = req.params.fn;
 	var ln = req.params.ln;
 	var tp = req.params.tp;
@@ -137,13 +139,44 @@ app.post('/pickups:fn--:ln--:tp', function(req, res) {
 	
 	var insertSql = "INSERT INTO Pickup (ClientID, BagName, Date) VALUES (CID, BagName, CURDATE());";
 
-		
+	//TODO: call con.query on the above insertSql
+
 });
 
 //COMPLETE DROP OFF (Figure 5)
+app.post('/dropoffs', function(req, res) {
+	
+	//Get the name of the attributes via the post request
+    var attrs = [ req.body['Product'], req.body['Quantity'], req.body['Source'] ];
+    
+    //The SQL for inserting into dropoff
+    var insertSql = 'INSERT INTO Dropoff (ProdName, Quantity, Date) ' +
+			+ ' VALUES ( "' + attrs[0] + '", + "' + attrs[1] + '", CURDATE());';
+    
+    //The SQL for updating the product count
+    var updateSql = 'UPDATE Product SET Quantity = Quantity + ' + attrs[1] +
+    		' WHERE ProdName = "' + attrs[0] + '" AND Source = "' + attrs[2] + '");';
+    		
+    
+    //Do I need anything else here
+    sql(updateSQL, function (err, rows) {
+    	if(err) { throw err; }
+    });
+
+    sql(insertSQL, function(err, rows) {
+      if(err) { throw err; }
+    });
+
+    res.send('created new dropoff');
+});
+
+//LIST ALL DROPOFF (Figure 5)
 app.get('/dropoffs', function(req, res) 
 {
-  res.send('all the dropoffs');
+	
+	
+	
+	res.send('all the dropoffs');
 });
 
 app.get('/pickup/new', function(req, res) 
@@ -274,11 +307,6 @@ app.put('/bags/:bagname', function(req, res) {
     res.send('your bag was updated');
 });
 
-//
-app.post('/dropoffs', function(req, res) {
-    // save new dropoff
-    res.send('created new dropoff');
-});
 
 
 
