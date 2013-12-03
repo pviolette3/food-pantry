@@ -53,6 +53,105 @@ app.get('/users', function(req, res) {
 		con.end();	
 	});
 
+
+app.get('/clients/:cid', function(req, res) {
+   sql('SELECT * FROM Client WHERE CID="' + req.params.cid + '";', function(err, rows) {
+    return res.render('clients/show', {client: rows[0]});
+   }); // callback hell :D
+});
+
+
+app.get('/clients/:clientid/fam/new', function(req, res) {
+    req.params.clientid;
+    res.send('form for addding a new family member');
+});
+
+//ADD FAMILY MEMBERS (Figure 8)
+app.post('/clients/:clientid/fam', function(req, res) {
+    // save the family members
+    res.send('updated the client with the family members');
+});
+
+//LOGIN (Figure 1)
+app.get('/login', function(req, res) {
+    return res.redirect('/logIn.html');
+});
+
+//LOGIN (Figure 1)
+app.post('/login', function(req, res) 
+{
+    if(req.cookies && req.cookies.user) {
+        return res.redirect('/home');
+    }else { // see if they log in properly
+        var con = dbCon.makeConnection();
+        con.connect();
+        con.query("SELECT * FROM User WHERE UserName='" + 
+            req.body.username + "' AND Password='" + req.body.password + "'",
+        function(err, rows) {
+            if(err) throw err;
+            if(rows.length > 0) {
+                res.cookie('user', 'yes'); //success
+                return res.redirect('/home');
+            }else {
+                return res.redirect('/login');
+            }
+        });
+        con.end();
+    }
+});
+
+//HOME (Figure 2)
+app.get('/home', function(req, res) {
+    return res.redirect('/home.html');
+});
+
+//PICKUPS (Figure 3)
+app.get('/pickups:_day', function(req, res) 
+{
+	var con = dbCon.makeConnection();
+	var day = req.params.day;//document.getElementById('form').value;
+	con.connect();
+	con.query('CALL GetPickupSignIn("' + day + '")',
+			function(err, rows, field)
+			{
+				if(err) { throw err; }
+				res.send(rows);
+			});
+	con.end();
+});
+
+//FAMILY BAG PICKUP (Figure 4)
+app.post('/pickups:fn--:ln--:tp', function(req, res) {
+    // update db with bag pickup
+	
+	var fn = req.params.fn;
+	var ln = req.params.ln;
+	var tp = req.params.tp;
+	
+	con.query('CALL GetBagInfoForClient("' + fn + '",  "' + ln + '", "' + tp + '")',
+			function(err, rows, field)
+			{
+				if(err) { throw err; }
+				res.send(rows);
+			});
+	
+	var insertSql = "INSERT INTO Pickup (ClientID, BagName, Date) VALUES (CID, BagName, CURDATE());";
+
+		
+});
+
+//COMPLETE DROP OFF (Figure 5)
+app.get('/dropoffs', function(req, res) 
+{
+  res.send('all the dropoffs');
+});
+
+app.get('/pickup/new', function(req, res) 
+{
+    res.send('the form to pickup a bag');
+});
+
+//CLIENTS (Figure 6)
 app.get('/clients', function(req, res) {
 	sql('SELECT * FROM Client LIMIT 100', function(err, rows, fields)
 	{
@@ -61,6 +160,7 @@ app.get('/clients', function(req, res) {
 	});
 });
 
+//CLIENTS (Figure 6)
 app.get('/clients/search/:clientName--:telephone', function(req, res) 
 {
 //	if(clientName)
@@ -82,10 +182,12 @@ app.get('/clients/search/:clientName--:telephone', function(req, res)
     con.end();
 });
 
+//ADD CLIENT (Figure 7)
 app.get('/clients/new', function(req, res) {
    res.render('clients/new');
 });
 
+//ADD CLIENT (Figure 7)
 app.post('/clients', function(req, res) {
     var attrs = {type: [], values: []};
     var valid_names = ['BagSignedUp', 'FirstName', 'LastName', 'Phone',
@@ -112,111 +214,22 @@ app.post('/clients', function(req, res) {
     });
 });
 
-app.get('/clients/:cid', function(req, res) {
-   sql('SELECT * FROM Client WHERE CID="' + req.params.cid + '";', function(err, rows) {
-    return res.render('clients/show', {client: rows[0]});
-   }); // callback hell :D
-});
-
-app.get('/clients/:clientid/fam/new', function(req, res) {
-    req.params.clientid;
-    res.send('form for addding a new family member');
-});
-
-app.post('/clients/:clientid/fam', function(req, res) {
-    // save the family members
-    res.send('updated the client with the family members');
-});
-
-app.get('/login', function(req, res) {
-    return res.redirect('/logIn.html');
-});
-
-app.post('/login', function(req, res) 
-{
-    if(req.cookies && req.cookies.user) {
-        return res.redirect('/home');
-    }else { // see if they log in properly
-        var con = dbCon.makeConnection();
-        con.connect();
-        con.query("SELECT * FROM User WHERE UserName='" + 
-            req.body.username + "' AND Password='" + req.body.password + "'",
-        function(err, rows) {
-            if(err) throw err;
-            if(rows.length > 0) {
-                res.cookie('user', 'yes'); //success
-                return res.redirect('/home');
-            }else {
-                return res.redirect('/login');
-            }
-        });
-        con.end();
-    }
-});
-
-app.get('/home', function(req, res) {
-    return res.redirect('/home.html');
-});
-
-app.get('/pickups:_day', function(req, res) 
-{
-	var con = dbCon.makeConnection();
-	var day = req.params.day;//document.getElementById('form').value;
-	con.connect();
-	con.query('CALL GetPickupSignIn("' + day + '")',
-			function(err, rows, field)
-			{
-				if(err) { throw err; }
-				res.send(rows);
-			});
-	con.end();
-});
-
-app.get('/pickup/new', function(req, res) {
-    res.send('the form to pickup a bag');
-});
-
-app.post('/pickups', function(req, res) {
-    // update db with bag pickup
-    res.send('the bag pickup was recorded');
-});
-
-app.get('/dropoffs', function(req, res) {
-		
-  res.send('all the dropoffs');
-});
-
-app.post('/dropoffs', function(req, res) {
-    // save new dropoff
-    res.send('created new dropoff');
-});
 
 
+//HUNGER RELIEF BAG LIST (Figure 9)
 app.get('/reports/hunger-relief', function(req, res) {
 	
     res.send('hunger relief report');
 });
-	
-app.get('/reports/service', function(req, res) {
-    res.send('here is the service report');
-});
 
-app.get('/bags', function(req, res) {
-	
-  res.send('got some bags');
-});
-
-
+//EDIT BAG (Figure 10)
 app.get('/bag/:bagname/edit', function(req, res) 
 {
-    res.send('the form for editing a bag');
+	
+	
 });
 
-app.put('/bags/:bagname', function(req, res) {
-    // update the bag with new values
-    res.send('your bag was updated');
-});
-
+//PRODUCT LIST (Figure 11)
 app.get('/products', function(req, res) {
 	
 	var con = dbCon.makeConnection();
@@ -229,6 +242,45 @@ app.get('/products', function(req, res) {
 			});
 	con.end();
 });
+
+//MONTHLY SERVICE REPORT (Figure 13)
+app.get('/reports/service', function(req, res) {
+    res.send('here is the service report');
+});
+
+
+
+
+
+
+
+
+
+app.get('/bags', function(req, res) {
+	
+	con.query('CALL GetPickupSignIn("' + day + '")',
+			function(err, rows, field)
+			{
+				if(err) { throw err; }
+				res.send(rows);
+			});
+  res.send('got some bags');
+});
+
+
+
+app.put('/bags/:bagname', function(req, res) {
+    // update the bag with new values
+    res.send('your bag was updated');
+});
+
+//
+app.post('/dropoffs', function(req, res) {
+    // save new dropoff
+    res.send('created new dropoff');
+});
+
+
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));
