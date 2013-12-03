@@ -130,16 +130,24 @@ app.post('/pickups:fn--:ln--:tp', function(req, res) {
 	var ln = req.params.ln;
 	var tp = req.params.tp;
 	
+	var insertSql = 'INSERT INTO Pickup (ClientID, BagName, Date) VALUES ("';
+	
 	con.query('CALL GetBagInfoForClient("' + fn + '",  "' + ln + '", "' + tp + '")',
 			function(err, rows, field)
 			{
 				if(err) { throw err; }
+				
+				for(var i in rows)
+				{
+					insertSql = insertSql + "'";
+				}
+				
 				res.send(rows);
 			});
 	
 	var insertSql = "INSERT INTO Pickup (ClientID, BagName, Date) VALUES (CID, BagName, CURDATE());";
 
-	//TODO: call con.query on the above insertSql
+	//TODO: call con.query on the above insertSql when the pickup bag button is pressed
 
 });
 
