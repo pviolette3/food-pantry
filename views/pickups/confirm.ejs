@@ -1,5 +1,5 @@
-<html>
-  <body>
+<% include ../head %>
+
     <h2> <%= name %> </h2>
     <h4> <%= date %> </h4>
     <table>
@@ -22,5 +22,4 @@
       <input type="hidden" name="bagName" value="<%= bag[0].BagSignedUp %>" />
       <input type="submit" value="Confirm Pickup"/>
     </form>
-  </body>
-</html>
+<% include ../foot %>

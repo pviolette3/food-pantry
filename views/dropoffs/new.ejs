@@ -1,5 +1,5 @@
-<html>
-    <body>
+<% include ../head %>
+
       <h1>Add a new Dropoff</h1>
       <form action="/dropoffs" method="post">
         Product: <select name = "Product">
@@ -11,5 +11,6 @@
         Source: <input type="text" name="Source"></input><br>
         <input type="submit" value="Create"></input>
       </form>
-    </body>
-</html>
+      
+<% include ../foot %>
+

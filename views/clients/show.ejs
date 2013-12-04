@@ -1,8 +1,9 @@
-<html>
-  <body>
+<% include ../head %>
+
     <h1> <%= client.FirstName + " " + client.LastName %> </h1>
     <p>Bag name : <%= client.BagSignedUp %> </p>
     <p> Pickup day: <%= client.PickupDay %> </p>
     <p> Client since : <%= client.Start %> </p>
-  </body>
-</html>
+    
+<% include ../foot %>
+

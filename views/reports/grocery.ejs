@@ -1,9 +1,8 @@
-<html>
+<% include ../head %>
 
 	<a href = "/reports/service/thisMonth">Service Report (This Month)</a>
 	<a href = "/reports/service/thisMonth">Service Report (Last Month)</a>
 	
-	<body>
 		<table border = "1">
 		<tr>
 			<td>Product					</td>
@@ -15,5 +14,4 @@
 				<% for(var j = 0; j < val.length; j++) { %> <td> <%= arr[i][val[j]] %> </td> <% } }%>
 			</tr>
 		</table>
-	</body>
-</html>
+<% include ../foot %>
