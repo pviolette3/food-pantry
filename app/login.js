@@ -1,7 +1,7 @@
 module.exports = function(app, sql) {
     //LOGIN (Figure 1)
     app.get('/login', function(req, res) {
-        return res.redirect('/logIn.html');
+        return res.render('login');
     });
 
     //LOGIN (Figure 1)

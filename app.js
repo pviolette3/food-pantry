@@ -3,6 +3,7 @@ var http = require('http');
 var path = require('path');
 var db = require('./database_connector');
 var dbCon = new db.DbConnector('localhost', 'foodpantry', 'cs4400');
+var middleware = require('./middleware');
 var app = express();
 
 // all environments
@@ -16,9 +17,12 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride()); //for app.put
 app.use(express.bodyParser()); // for getting post params
+
+
+// app.use(requireLogin);
+
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
-
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
@@ -38,7 +42,7 @@ app.get('/', function(req, res) {
 
 //HOME (Figure 2)
 app.get('/home', function(req, res) {
-    return res.redirect('/home.html');
+    return res.render('home');
 });
 
 require('./app/login.js')(app, sql);
