@@ -1,0 +1,12 @@
+<html>
+  <body>
+    <form action="/pickups" method="post">
+
+      <input type="hidden" name="cid" value="<%= bag.CID %>"/>
+      <input type="hidden" name="date" value="<%= date %>" />
+      <input type="hidden" name="bagName" value="<%= bag.BagSignedUp %>" />
+      <input type="submit" value="Confirm Pickup"/>
+    </form>
+  </body>
+
+</html>

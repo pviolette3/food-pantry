@@ -57,7 +57,7 @@ app.get('/users', function(req, res) {
 app.get('/clients/:cid', function(req, res) {
    sql('SELECT * FROM Client WHERE CID="' + req.params.cid + '";', function(err, rows) {
     return res.render('clients/show', {client: rows[0]});
-   }); // callback hell :D
+   });
 });
 
 
@@ -106,49 +106,55 @@ app.get('/home', function(req, res) {
 });
 
 //PICKUPS (Figure 3)
-app.get('/pickups:_day', function(req, res) 
+app.get('/pickups/:day', function(req, res) 
 {
-	var con = dbCon.makeConnection();
-	var day = req.params.day;//document.getElementById('form').value;
-	con.connect();
-	con.query('CALL GetPickupSignIn("' + day + '")',
-			function(err, rows, field)
-			{
-				if(err) { throw err; }
-				res.send(rows);
-			});
-	con.end();
+	sql('CALL GetPickupSignIn("' + req.params.day + '")',
+		function(err, rows, field)
+		{
+			if(err) { throw err; }
+			res.send(rows);
+		});
 });
 
 //FAMILY BAG PICKUP (Figure 4)
-app.post('/pickups:fn--:ln--:tp', function(req, res) {
+app.get('/pickups/signin/:cid', function(req, res) {
+    sql('SELECT * FROM Client WHERE CID=' + req.params.cid + ';', function(err, rows) {
+        if(err) {throw err;}
+        var firstName = rows[0].FirstName;
+        var lastName = rows[0].LastName;
+        var phone = rows[0].Phone;
+        sql('CALL GetBagInfoForClient("' + firstName + '",  "' + lastName + '", "' + phone + '");',
+                function(err, rows, field)
+                {
+                    var now = new Date();
+                    var nowString = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate()
+                    if(err) { throw err; }
+                    pickupData = {
+                        bag: rows[0][0],
+                        name: (firstName + ' ' + lastName),
+                        date: nowString
+                    };
+                    res.render('pickups/confirm', pickupData);
+                });
+    });
+});
+
+
+app.post('/pickups', function(req, res) {
     // update db with bag pickup
+    quotes = ['"', '"']
+	params = [quotes.join(req.body.cid), 
+              quotes.join(req.body.bagName),
+              quotes.join(req.body.date)];
 	
-	var con = dbCon.makeConnection();
 	
-	var fn = req.params.fn;
-	var ln = req.params.ln;
-	var tp = req.params.tp;
-	
-	var insertSql = 'INSERT INTO Pickup (ClientID, BagName, Date) VALUES ("';
-	
-	con.query('CALL GetBagInfoForClient("' + fn + '",  "' + ln + '", "' + tp + '")',
-			function(err, rows, field)
-			{
-				if(err) { throw err; }
-				
-				for(var i in rows)
-				{
-					insertSql = insertSql + "'";
-				}
-				
-				res.send(rows);
-			});
-	
-	var insertSql = "INSERT INTO Pickup (ClientID, BagName, Date) VALUES (CID, BagName, CURDATE());";
-
-	//TODO: call con.query on the above insertSql when the pickup bag button is pressed
-
+	var insertSql = "INSERT INTO Pickup (ClientID, BagName, Date) VALUES (" + params.join(",") + 
+        ");";
+    console.log(insertSql);
+    sql(insertSql, function(err, rows) {
+        if(err) {throw err;}
+        res.redirect('/home');
+    });
 });
 
 //COMPLETE DROP OFF (Figure 5)
@@ -185,11 +191,6 @@ app.get('/dropoffs', function(req, res)
 	
 	
 	res.send('all the dropoffs');
-});
-
-app.get('/pickup/new', function(req, res) 
-{
-    res.send('the form to pickup a bag');
 });
 
 //CLIENTS (Figure 6)
