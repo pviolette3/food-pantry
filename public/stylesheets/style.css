@@ -45,5 +45,9 @@ border-color:#0073FF;
 background-color:white;
 }
 
+.container {
+  align: center;
+}
+
 
 /* Other possible style blocks go here... */
