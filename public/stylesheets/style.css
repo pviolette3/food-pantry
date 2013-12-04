@@ -37,9 +37,13 @@ a:active {
     color: #0073FF;
 }
 
-td {
-   border: 1px solid #999;
-   padding: 0.1em 1em;
+table, td, th
+{
+border:2px;
+border-style:solid;
+border-color:#0073FF;
+background-color:white;
 }
+
 
 /* Other possible style blocks go here... */
