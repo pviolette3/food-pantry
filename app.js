@@ -121,7 +121,7 @@ app.get('/pickups:_day', function(req, res)
 });
 
 //FAMILY BAG PICKUP (Figure 4)
-app.post('/pickups:fn--:ln--:tp', function(req, res) {
+app.post('/pickups/:fn--:ln--:tp', function(req, res) {
     // update db with bag pickup
 	
 	var con = dbCon.makeConnection();
@@ -130,30 +130,30 @@ app.post('/pickups:fn--:ln--:tp', function(req, res) {
 	var ln = req.params.ln;
 	var tp = req.params.tp;
 	
-	var insertSql = 'INSERT INTO Pickup (ClientID, BagName, Date) VALUES ("';
+	var cid;
+	var bagName;
 	
-	con.query('CALL GetBagInfoForClient("' + fn + '",  "' + ln + '", "' + tp + '")',
+	sql('CALL GetBagInfoForClient("' + fn + '",  "' + ln + '", "' + tp + '")',
 			function(err, rows, field)
 			{
 				if(err) { throw err; }
-				
-				for(var i in rows)
-				{
-					insertSql = insertSql + "'";
-				}
+				cid = rows[ClientID];
+				bagName = rows[BagName];
 				
 				res.send(rows);
 			});
-	
-	var insertSql = "INSERT INTO Pickup (ClientID, BagName, Date) VALUES (CID, BagName, CURDATE());";
+
+	var insertSql = 'INSERT INTO Pickup (ClientID, BagName, Date) ' + 
+		'VALUES ("' + cid + '" + ," + ' + BagName + '", CURDATE());';
 
 	//TODO: call con.query on the above insertSql when the pickup bag button is pressed
+	
 
 });
 
 //COMPLETE DROP OFF (Figure 5)
 app.post('/dropoffs', function(req, res) {
-	
+		
 	//Get the name of the attributes via the post request
     var attrs = [ req.body['Product'], req.body['Quantity'], req.body['Source'] ];
     
@@ -166,7 +166,7 @@ app.post('/dropoffs', function(req, res) {
     		' WHERE ProdName = "' + attrs[0] + '" AND Source = "' + attrs[2] + '");';
     		
     
-    //Do I need anything else here
+    //Do I need anything else here?
     sql(updateSQL, function (err, rows) {
     	if(err) { throw err; }
     });
@@ -181,10 +181,7 @@ app.post('/dropoffs', function(req, res) {
 //LIST ALL DROPOFF (Figure 5)
 app.get('/dropoffs', function(req, res) 
 {
-	
-	
-	
-	res.send('all the dropoffs');
+	res.render('clients/newdropoff');
 });
 
 app.get('/pickup/new', function(req, res) 
@@ -193,12 +190,14 @@ app.get('/pickup/new', function(req, res)
 });
 
 //CLIENTS (Figure 6)
-app.get('/clients', function(req, res) {
+app.get('/clients', function(req, res) 
+{
 	sql('SELECT * FROM Client LIMIT 100', function(err, rows, fields)
 	{
-		if(err){throw err;}
+		if(err) {throw err; }
 		return res.render('clients/list', {rows: rows});
 	});
+	
 });
 
 //CLIENTS (Figure 6)
@@ -235,7 +234,8 @@ app.post('/clients', function(req, res) {
       'Street', 'City', 'State', 'Zip', 'Apt', 'Gender', 'Start', 'PickupDay'];
     // see which params they actually passed.
     // TODO Validation, bc we are gonna get SQL injected like this
-    for (var param in req.body) {
+    for (var param in req.body) 
+    {
         if (req.body.hasOwnProperty(param) 
             && (valid_names.indexOf(param) > -1)) {
            attrs.type.push(param);
@@ -246,6 +246,7 @@ app.post('/clients', function(req, res) {
            }
         }
     }
+    
     var insertSQL = "INSERT INTO Client (" + attrs.type.join(",") + ") VALUES ("
     + attrs.values.join(",") + ");";
     // Run the SQL
@@ -255,10 +256,14 @@ app.post('/clients', function(req, res) {
     });
 });
 
-
-
 //HUNGER RELIEF BAG LIST (Figure 9)
 app.get('/reports/hunger-relief', function(req, res) {
+	
+	sql('CALL GetHungerReliefBagList()', function(err, rows, fields)
+	{	
+		if(err){throw err;}
+		res.send(rows);
+	});
 	
     res.send('hunger relief report');
 });
@@ -273,20 +278,23 @@ app.get('/bag/:bagname/edit', function(req, res)
 //PRODUCT LIST (Figure 11)
 app.get('/products', function(req, res) {
 	
-	var con = dbCon.makeConnection();
-	con.connect();
-	con.query('CALL GetProductList()',
+	sql('CALL GetProductList()',
 			function(err, rows, field)
 			{
 				if(err) { throw err; }
 				res.send(rows);
 			});
-	con.end();
 });
 
 //MONTHLY SERVICE REPORT (Figure 13)
-app.get('/reports/service', function(req, res) {
-    res.send('here is the service report');
+app.get('/reports/service', function(req, res) 
+{
+	sql('CALL GetMontlyServiceReport()', function(err, rows, field)
+			{
+				if(err) { throw err; }
+				res.send(rows);
+			});
+			
 });
 
 
@@ -314,8 +322,6 @@ app.put('/bags/:bagname', function(req, res) {
     // update the bag with new values
     res.send('your bag was updated');
 });
-
-
 
 
 http.createServer(app).listen(app.get('port'), function() {

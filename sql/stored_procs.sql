@@ -20,6 +20,18 @@ CREATE PROCEDURE GetPickupSignIn(IN Day tinyint)
 		GROUP BY CID) as fam RIGHT OUTER JOIN Client c ON fam.CID = c.CID WHERE c.PickupDay = Day;	
 	END //
 	
+CREATE PROCEDURE GetHungerReliefBagList()
+	BEGIN
+		(SELECT bag_prod.BagName, bag_prod.num_items, COUNT(c.CID) FROM
+			(((SELECT BagName, COUNT(ProductName) 
+			AS num_items 
+			FROM Holds 
+			GROUP BY BagName) 
+			AS bag_prod)
+			LEFT OUTER JOIN Client c ON c.BagSignedup = bag_prod.BagName)
+	GROUP BY bag_prod.BagName);
+	END //
+	
 	
 CREATE PROCEDURE GetFamilyInfoByPickupDay(IN Day tinyint)
     BEGIN
@@ -69,6 +81,43 @@ CREATE PROCEDURE GetProductList()
         ((SELECT Name, Cost FROM Product) as p)
         ON p.Name = prod_qty.ProdName;
     END //
+	
+CREATE PROCEDURE GetMonthlyServiceReport()
+	BEGIN
+		CREATE TEMPORARY TABLE WeekBags AS SELECT CASE WHEN PickupDay < 7 THEN 1
+			WHEN PickupDay < 14 THEN 2
+				WHEN PickupDay < 21 THEN 3
+				WHEN PickupDay < 28 THEN 4
+				ELSE 5
+			END AS Week, BagSignedUp FROM Client;# 3 rows affected.
+
+		CREATE TEMPORARY TABLE WeekProducts AS (SELECT Week, ProductName, CurrentMonthQuantity AS Quantity FROM (WeekBags w JOIN Holds h ON w.BagSignedUp = h.BagName));
+		CREATE TEMPORARY TABLE WeekFoodCosts SELECT Week, SUM(Quantity * Cost) AS FoodCost FROM (WeekProducts wp JOIN Product p ON wp.ProductName = p.Name) GROUP BY Week;
+
+		CREATE TEMPORARY TABLE WeekCategories AS (SELECT week,
+			COUNT(DISTINCT CID) AS Households,
+			SUM(UnderEighteen) AS UnderEighteen,
+			SUM(EighteenToSixtyFour) AS EighteenToSixtyFour,
+					SUM(SixtyFiveAndUp) AS SixtyFiveAndUp,
+					COUNT(*) AS TotalPeople FROM ((SELECT CID,
+			CASE WHEN age BETWEEN 0 AND 18 THEN 1 ELSE 0 END AS UnderEighteen,
+			CASE WHEN age BETWEEN 19 AND 64 THEN 1 ELSE 0 END AS EighteenToSixtyFour,
+			CASE WHEN age > 65 THEN 1 ELSE 0 END AS SixtyFiveAndUp,
+
+		  CASE WHEN PickupDay < 7 THEN 1
+			WHEN PickupDay < 14 THEN 2
+				WHEN PickupDay < 21 THEN 3
+				WHEN PickupDay < 28 THEN 4
+				ELSE 5
+			END AS Week
+					 
+			FROM (((SELECT ClientID AS CID, DATEDIFF(CURDATE(), dob) / 365.25 as age FROM FamilyMember)
+			UNION
+			(SELECT CID, DATEDIFF(CURDATE(), dob) / 365.25 as age FROM Client)) as ages) NATURAL JOIN Client) as cat)
+			GROUP BY Week);
+
+			SELECT * FROM WeekCategories wc LEFT JOIN WeekFoodCosts wf ON wc.Week = wf.Week;
+	END//
 
 -- The beginning of hell, mysql does not support FULL OUTER JOIN. Here ya go
 CREATE PROCEDURE GetGroceryList()
