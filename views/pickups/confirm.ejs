@@ -1,0 +1,26 @@
+<html>
+  <body>
+    <h2> <%= name %> </h2>
+    <h4> <%= date %> </h4>
+    <table>
+      <tr>
+        <th>Product</th>
+        <th>Quanity</th>
+      </tr>
+
+      <% for(var i = 0; i < bag.length; i++) { %>
+          <tr>
+            <td> <%= bag[i].ProductName %> </td>
+            <td> <%= bag[i].CurrentMonthQuantity%> </td>
+          </tr>
+      <% } %>
+    <table>
+    <br>
+    <form action="/pickups" method="post">
+      <input type="hidden" name="cid" value="<%= bag[0].CID %>"/>
+      <input type="hidden" name="date" value="<%= date %>" />
+      <input type="hidden" name="bagName" value="<%= bag[0].BagSignedUp %>" />
+      <input type="submit" value="Confirm Pickup"/>
+    </form>
+  </body>
+</html>

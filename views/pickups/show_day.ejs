@@ -1,0 +1,42 @@
+<html>
+
+  <body>
+    
+    <table>
+      <tr>
+        <th> Sign in! </th>
+        <th> Name </th>
+        <th> Size </th>
+        <th> Address </th>
+        <th> Phone Number </th>
+        <th> Pickup Day </th>
+      </tr>
+
+      <% for(var i = 0; i < clients.length; ++i) { %>
+        <tr>
+          <% var c = clients[i] %>
+          <td> <a href="/pickups/signin/<%= c.CID %>">O</a></td>
+          <td> <a href="/pickups/signin/<%= c.CID %>"><%=c.FirstName + " " + c.LastName %></a></td>
+          <td> <%= c.Size %> </td>
+          <%
+            var address = "";
+            if(!(c.Street && c.City && c.State && c.Zip)) {
+              address = "N/A";
+            }
+            else {
+              address = c.Street;
+              if(c.Apt) {address += " " + c.Apt;}
+              address += "\n" + c.City + ", " + c.State + "  " + c.Zip;
+            }
+          %>
+          <td> <%= address %> </td>
+          <td> <%= c.Phone %> </td>
+          <td> <%= c.PickupDay %> </td>
+        </tr>
+      <% } %>
+
+
+    </table>
+
+  </body>
+</html>
