@@ -19,7 +19,7 @@ app.use(express.methodOverride()); //for app.put
 app.use(express.bodyParser()); // for getting post params
 
 
-// app.use(requireLogin);
+// app.use(middleware.requireLogin);
 
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
