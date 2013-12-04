@@ -54,10 +54,46 @@ app.get('/users', function(req, res) {
 	});
 
 
-app.get('/clients/:cid', function(req, res) {
-   sql('SELECT * FROM Client WHERE CID="' + req.params.cid + '";', function(err, rows) {
-    return res.render('clients/show', {client: rows[0]});
-   });
+// DO NOT MOVE THESE in the file!!
+//ADD CLIENT (Figure 7)
+app.get('/clients/new', function(req, res) {
+    console.log("New client!!");
+    res.render('clients/new');
+});
+
+//ADD CLIENT (Figure 7, backend)
+app.post('/clients', function(req, res) {
+    var attrs = {type: [], values: []};
+    var valid_names = ['BagSignedUp', 'FirstName', 'LastName', 'Phone',
+      'Street', 'City', 'State', 'Zip', 'Apt', 'Gender', 'Start', 'PickupDay'];
+    // see which params they actually passed.
+    // TODO Validation, bc we are gonna get SQL injected like this
+    for (var param in req.body) {
+        if (req.body.hasOwnProperty(param) 
+            && (valid_names.indexOf(param) > -1)) {
+           attrs.type.push(param);
+           if(req.body[param]) { // Tests for empty string
+             attrs.values.push('"' + req.body[param] + '"');
+           }else {
+             attrs.values.push("NULL");
+           }
+        }
+    }
+    var insertSQL = "INSERT INTO Client (" + attrs.type.join(",") + ") VALUES ("
+    + attrs.values.join(",") + ");";
+    // Run the SQL
+    sql(insertSQL, function(err, rows) {
+      if(err) throw err;
+      res.send("Nice job " + JSON.stringify(rows));
+    });
+});
+
+
+app.get(/^\/clients\/(\d+)$/, function(req, res) {
+    var cid = req.params[0];
+    sql('SELECT * FROM Client WHERE CID="' + cid + '";', function(err, rows) {
+        return res.render('clients/show', {client: rows[0]});
+    });
 });
 
 
@@ -235,37 +271,6 @@ app.get('/clients/search/:clientName--:telephone', function(req, res)
     con.end();
 });
 
-//ADD CLIENT (Figure 7)
-app.get('/clients/new', function(req, res) {
-   res.render('clients/new');
-});
-
-//ADD CLIENT (Figure 7)
-app.post('/clients', function(req, res) {
-    var attrs = {type: [], values: []};
-    var valid_names = ['BagSignedUp', 'FirstName', 'LastName', 'Phone',
-      'Street', 'City', 'State', 'Zip', 'Apt', 'Gender', 'Start', 'PickupDay'];
-    // see which params they actually passed.
-    // TODO Validation, bc we are gonna get SQL injected like this
-    for (var param in req.body) {
-        if (req.body.hasOwnProperty(param) 
-            && (valid_names.indexOf(param) > -1)) {
-           attrs.type.push(param);
-           if(req.body[param]) { // Tests for empty string
-             attrs.values.push('"' + req.body[param] + '"');
-           }else {
-             attrs.values.push("NULL");
-           }
-        }
-    }
-    var insertSQL = "INSERT INTO Client (" + attrs.type.join(",") + ") VALUES ("
-    + attrs.values.join(",") + ");";
-    // Run the SQL
-    sql(insertSQL, function(err, rows) {
-      if(err) throw err;
-      res.send("Nice job " + JSON.stringify(rows));
-    });
-});
 
 
 
