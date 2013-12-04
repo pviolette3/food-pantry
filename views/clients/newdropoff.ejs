@@ -2,7 +2,11 @@
     <body>
       <h1>Add a new Dropoff</h1>
       <form action="/dropoffs" method="post">
-        Product: <input type="text" name="Product"></input><br>
+        Product: <select name = "Product">
+        
+        	<%for (var j in arr) { %> <option value = <%=arr[j]["Name"] %> > <%=arr[j]["Name"]%> </option><%} %> 
+        	
+        </select><br>
         Quantity: <input type="text" name="Quantity"></input><br>
         Source: <input type="text" name="Source"></input><br>
         <input type="submit" value="Create"></input>

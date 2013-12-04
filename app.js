@@ -158,30 +158,33 @@ app.post('/dropoffs', function(req, res) {
     var attrs = [ req.body['Product'], req.body['Quantity'], req.body['Source'] ];
     
     //The SQL for inserting into dropoff
-    var insertSql = 'INSERT INTO Dropoff (ProdName, Quantity, Date) ' +
-			+ ' VALUES ( "' + attrs[0] + '", + "' + attrs[1] + '", CURDATE());';
+    var insertSql = 'INSERT INTO Dropoff (ProdName, Quantity, Date) VALUES ( "' + attrs[0] + '", "' + attrs[1] + '", CURDATE());';
+            
+    sql('SELECT * FROM Product WHERE Name = "' + attrs[0] + '";', function(err, rows, field)
+    		{
+    			if(err) {throw err;}
+    			console.log(rows);
+    			
+    		    sql(insertSql, function(err, rows) {
+    		        if(err) { throw err; }
+    		      });
+    		    
+    		});
     
-    //The SQL for updating the product count
-    var updateSql = 'UPDATE Product SET Quantity = Quantity + ' + attrs[1] +
-    		' WHERE ProdName = "' + attrs[0] + '" AND Source = "' + attrs[2] + '");';
-    		
-    
-    //Do I need anything else here?
-    sql(updateSQL, function (err, rows) {
-    	if(err) { throw err; }
-    });
 
-    sql(insertSQL, function(err, rows) {
-      if(err) { throw err; }
-    });
 
-    res.send('created new dropoff');
+    res.send('New dropoff created!');
 });
 
 //LIST ALL DROPOFF (Figure 5)
 app.get('/dropoffs', function(req, res) 
 {
-	res.render('clients/newdropoff');
+	sql('SELECT Name FROM Product', function(err, rows, fields)
+			{
+				if(err) {throw err;}
+				res.render('clients/newdropoff', {arr : rows});
+			});
+			
 });
 
 app.get('/pickup/new', function(req, res) 
@@ -219,6 +222,7 @@ app.get('/clients/search/:clientName--:telephone', function(req, res)
 			if(err) {throw err;}
 			res.send(rows);
 		});
+    
     con.end();
 });
 
@@ -289,20 +293,19 @@ app.get('/products', function(req, res) {
 //MONTHLY SERVICE REPORT (Figure 13)
 app.get('/reports/service', function(req, res) 
 {
-	sql('CALL GetMontlyServiceReport()', function(err, rows, field)
+	sql('CALL GetMonthlyServiceReport()', function(err, rows, field)
 			{
 				if(err) { throw err; }
+				console.log(rows[0]);
+				
+				var valid = ["Week", "Households", "UnderEighteen", "EighteenToSixtyFour",
+				             "SixtyFiveAndUp", "TotalPeople", "Week", "FoodCost"];
+
+				res.render('reports/service', {arr : rows[0], val : valid} );
 				res.send(rows);
 			});
 			
 });
-
-
-
-
-
-
-
 
 
 app.get('/bags', function(req, res) {
@@ -311,8 +314,10 @@ app.get('/bags', function(req, res) {
 			function(err, rows, field)
 			{
 				if(err) { throw err; }
+				console.log(rows);
 				res.send(rows);
 			});
+	
   res.send('got some bags');
 });
 
