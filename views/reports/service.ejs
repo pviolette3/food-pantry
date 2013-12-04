@@ -1,8 +1,7 @@
 <html>
 
-	<a href = "/reports/grocery">Grocery Report</a>
-	<a href = "/reports/serviceThisMonth">Service Report (This month)</a>
-	<a href = "/reports/serviceLastMonth">Service Report (Last month)</a>
+	<a href = "/reports/service/thisMonth">Service Report (This month)</a>
+	<a href = "/reports/service/lastMonth">Service Report (Last month)</a>
 	<body>
 		<table border = "1">
 		<tr>
@@ -20,5 +19,8 @@
 				<% for(var j = 0; j < val.length; j++) { %> <td> <%= arr[i][val[j]] %> </td> <% } }%>
 			</tr>
 		</table>
+		
+		<a href = "/reports/grocery">Grocery Report</a>
+		
 	</body>
 </html>

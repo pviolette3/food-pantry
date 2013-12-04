@@ -1,0 +1,19 @@
+<html>
+	<body>
+		<table border = 1>
+			<tr>
+				<td>Product Name	</td>
+				<td>Quantity		</td>
+				<td>Cost per Unit	</td>
+			</tr>
+			
+			<% for (var i in arr) { %>
+				<tr>		
+					<% for(var j = 0; j < val.length; j++) { %> <td> <%= arr[i][val[j]] %> </td> <% } }%>
+		
+		</table>
+	
+	</body>
+
+
+</html>

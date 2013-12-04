@@ -82,16 +82,20 @@ CREATE PROCEDURE GetProductList()
         ON p.Name = prod_qty.ProdName;
     END //
 	
-CREATE PROCEDURE GetMonthlyServiceReport()
+CREATE PROCEDURE GetMonthlyServiceReport(IN thisMonth BOOLEAN)
 	BEGIN
 		CREATE TEMPORARY TABLE WeekBags AS SELECT CASE WHEN PickupDay < 7 THEN 1
 			WHEN PickupDay < 14 THEN 2
 				WHEN PickupDay < 21 THEN 3
 				WHEN PickupDay < 28 THEN 4
 				ELSE 5
-			END AS Week, BagSignedUp FROM Client;# 3 rows affected.
-
-		CREATE TEMPORARY TABLE WeekProducts AS (SELECT Week, ProductName, CurrentMonthQuantity AS Quantity FROM (WeekBags w JOIN Holds h ON w.BagSignedUp = h.BagName));
+			END AS Week, BagSignedUp FROM Client;
+		IF thisMonth THEN
+			CREATE TEMPORARY TABLE WeekProducts AS (SELECT Week, ProductName, CurrentMonthQuantity AS Quantity FROM (WeekBags w JOIN Holds h ON w.BagSignedUp = h.BagName));
+		ELSE
+			CREATE TEMPORARY TABLE WeekProducts AS (SELECT Week, ProductName, LastMonthQuantity AS Quantity FROM (WeekBags w JOIN Holds h ON w.BagSignedUp = h.BagName));
+		END IF;
+		
 		CREATE TEMPORARY TABLE WeekFoodCosts SELECT Week, SUM(Quantity * Cost) AS FoodCost FROM (WeekProducts wp JOIN Product p ON wp.ProductName = p.Name) GROUP BY Week;
 
 		CREATE TEMPORARY TABLE WeekCategories AS (SELECT week,

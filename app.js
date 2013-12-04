@@ -19,7 +19,8 @@ app.use(express.bodyParser()); // for getting post params
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
-var sql = function(query, callback) {
+var sql = function(query, callback) 
+{
     var con = dbCon.makeConnection();
     con.connect();
     con.query(query, callback);
@@ -173,7 +174,7 @@ app.post('/dropoffs', function(req, res) {
     
 
 
-    res.send('New dropoff created!');
+    res.redirect('/');
 });
 
 //LIST ALL DROPOFF (Figure 5)
@@ -286,14 +287,16 @@ app.get('/products', function(req, res) {
 			function(err, rows, field)
 			{
 				if(err) { throw err; }
-				res.send(rows);
+				var values = ['Name', 'Cost', 'QuantityOnHand'];
+				res.render('products/productList', {arr : rows[0], val : values});
+				console.log(rows);
 			});
 });
 
 //MONTHLY SERVICE REPORT (Figure 13)
-app.get('/reports/serviceThisMonth', function(req, res) 
+app.get('/reports/service/thisMonth', function(req, res) 
 {
-	sql('CALL GetMonthlyServiceReport(CURDATE())', function(err, rows, field)
+	sql('CALL GetMonthlyServiceReport(1)', function(err, rows, field)
 			{
 				if(err) { throw err; }
 				console.log(rows[0]);
@@ -307,9 +310,9 @@ app.get('/reports/serviceThisMonth', function(req, res)
 });
 
 //MONTHLY SERVICE REPORT (Figure 13)
-app.get('/reports/serviceLastMonth', function(req, res) 
+app.get('/reports/service/lastMonth', function(req, res) 
 {
-	sql('CALL GetMonthlyServiceReport(SELECT DateAdd(month, -1, Convert(date, GetDate()));)', function(err, rows, field)
+	sql('CALL GetMonthlyServiceReport(0)', function(err, rows, field)
 			{
 				if(err) { throw err; }
 				console.log(rows[0]);
