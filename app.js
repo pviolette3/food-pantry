@@ -1,5 +1,4 @@
 var express = require('express');
-require('express-namespace');
 var http = require('http');
 var path = require('path');
 var db = require('./database_connector');
@@ -168,7 +167,7 @@ app.get('/dropoffs', function(req, res)
 	sql('SELECT Name FROM Product', function(err, rows, fields)
 			{
 				if(err) {throw err;}
-				res.render('clients/newdropoff', {arr : rows});
+				res.render('/clients/newdropoff', {arr : rows});
 			});
 			
 });
@@ -176,63 +175,6 @@ app.get('/dropoffs', function(req, res)
 app.get('/pickup/new', function(req, res) 
 {
     res.send('the form to pickup a bag');
-});
-
-//CLIENTS (Figure 6)
-app.get('/clients/search/:clientName--:telephone', function(req, res) 
-{
-//	if(clientName)
-    var con = dbCon.makeConnection();
-    con.connect();
-	var cn = req.params.clientName;
-	var tp = req.params.telephone;
-	if(!cn)
-		cn = "";
-	if(!tp)
-		tp = "";
-	
-    con.query('CALL GetFamilyInfoBySearch("' + cn + '", "' + tp + '");',  
-		function(err, rows, fields) 
-		{
-			if(err) {throw err;}
-			res.send(rows);
-		});
-    
-    con.end();
-});
-
-//ADD CLIENT (Figure 7)
-app.get('/clients/new', function(req, res) {
-   res.render('clients/new');
-});
-
-//ADD CLIENT (Figure 7)
-app.post('/clients', function(req, res) {
-    var attrs = {type: [], values: []};
-    var valid_names = ['BagSignedUp', 'FirstName', 'LastName', 'Phone',
-      'Street', 'City', 'State', 'Zip', 'Apt', 'Gender', 'Start', 'PickupDay'];
-    // see which params they actually passed.
-    // TODO Validation, bc we are gonna get SQL injected like this
-    for (var param in req.body) 
-    {
-        if (req.body.hasOwnProperty(param) 
-            && (valid_names.indexOf(param) > -1)) {
-           attrs.type.push(param);
-           if(req.body[param]) { // Tests for empty string
-             attrs.values.push('"' + req.body[param] + '"');
-           }else {
-             attrs.values.push("NULL");
-           }
-        }
-    }
-    
-    var insertSQL = "INSERT INTO Client (" + attrs.type.join(",") + ") VALUES ("
-    + attrs.values.join(",") + ");";
-    // Run the SQL
-    sql(insertSQL, function(err, rows) {
-      if(err) throw err;
-      res.send("Nice job " + JSON.stringify(rows));
-    });
 });
 
 //HUNGER RELIEF BAG LIST (Figure 9)
