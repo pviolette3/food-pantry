@@ -1,4 +1,5 @@
 var express = require('express');
+require('express-namespace');
 var http = require('http');
 var path = require('path');
 var db = require('./database_connector');
@@ -43,24 +44,8 @@ app.get('/', function(req, res) {
 //Hunger Relief Bag List, Edit Bag, Product List (Search), 
 //New Inventory, Monthly Service Report, Grocery List Report
 
-app.get('/users', function(req, res) {
-		var con = dbCon.makeConnection();
-		con.connect();
-		con.query('SELECT * FROM Client', function(err, rows, fields)
-		{	
-			if(err){throw err;}
-			res.send(rows);
-		});
-		con.end();	
-	});
-
-
-app.get('/clients/:cid', function(req, res) {
-   sql('SELECT * FROM Client WHERE CID="' + req.params.cid + '";', function(err, rows) {
-    return res.render('clients/show', {client: rows[0]});
-   }); // callback hell :D
-});
-
+var clients = require('./clients')
+clients(app, sql);
 
 app.get('/clients/:clientid/fam/new', function(req, res) {
     req.params.clientid;
@@ -194,17 +179,6 @@ app.get('/pickup/new', function(req, res)
 });
 
 //CLIENTS (Figure 6)
-app.get('/clients', function(req, res) 
-{
-	sql('SELECT * FROM Client LIMIT 100', function(err, rows, fields)
-	{
-		if(err) {throw err; }
-		return res.render('clients/list', {rows: rows});
-	});
-	
-});
-
-//CLIENTS (Figure 6)
 app.get('/clients/search/:clientName--:telephone', function(req, res) 
 {
 //	if(clientName)
@@ -273,11 +247,30 @@ app.get('/reports/hunger-relief', function(req, res) {
     res.send('hunger relief report');
 });
 
+
+
+app.get('/bags', function(req, res) {
+    sql('SELECT * FROM Bag', function(err, rows) {
+        res.render('/bags/list', {bags: rows});
+    });
+});
+
 //EDIT BAG (Figure 10)
-app.get('/bag/:bagname/edit', function(req, res) 
-{
-	
-	
+app.get('/bags/:bagname/edit', function(req, res) {
+    sql('SELECT * FROM Holds WHERE BagName="' + req.params.bagname +'";',
+        function(err, rows, field) {
+            if(err) { throw err; }
+            bags = {};
+            for(var i = 0; i < rows.length; i++) {
+                bagItem = rows[i];
+                if(!bags[bagItem.BagName]) {
+                    bags[bagItem.BagName] = []
+                }
+                bags[bagItem.BagName].push(bagItem);
+            }
+            console.log(bags);
+            res.send(bags);
+    });  
 });
 
 //PRODUCT LIST (Figure 11)
@@ -370,19 +363,6 @@ app.get('/reports/grocery', function(req, res)
 
 	});
 });	
-
-app.get('/bags', function(req, res) {
-	
-	con.query('CALL GetPickupSignIn("' + day + '")',
-			function(err, rows, field)
-			{
-				if(err) { throw err; }
-				console.log(rows);
-				res.send(rows);
-			});
-	
-  res.send('got some bags');
-});
 
 
 

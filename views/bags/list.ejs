@@ -1,0 +1,15 @@
+<html>
+  <body>
+    <h1>Select a bag to edit</h1>
+    
+    <ul>
+      <% for(var i = 0; i < bags.length; i++) { %>
+        <li>
+          <a href="/bags/<%= bags[i].Name %>/edit"><%= bags[i].Name %></a>
+        </li>
+      <% } %>
+    </ul>
+     
+  </body>
+
+</html>

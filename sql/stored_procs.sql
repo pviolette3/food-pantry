@@ -98,7 +98,7 @@ CREATE PROCEDURE GetMonthlyServiceReport(IN thisMonth BOOLEAN)
 		
 		CREATE TEMPORARY TABLE WeekFoodCosts SELECT Week, SUM(Quantity * Cost) AS FoodCost FROM (WeekProducts wp JOIN Product p ON wp.ProductName = p.Name) GROUP BY Week;
 
-		CREATE TEMPORARY TABLE WeekCategories AS (SELECT week,
+		CREATE TEMPORARY TABLE WeekCategories AS (SELECT Week,
 			COUNT(DISTINCT CID) AS Households,
 			SUM(UnderEighteen) AS UnderEighteen,
 			SUM(EighteenToSixtyFour) AS EighteenToSixtyFour,
