@@ -1,0 +1,40 @@
+<html>
+  <body>
+    <h1>Add to <%=client.FirstName + " " + client.LastName %>'s family</h1>
+
+    <h4>Currently, there is</h4>
+    <table>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Gender</th>
+        <th>Date of Birth</th>
+      </tr>
+
+      <% for(var i = 0; i < family.length; i++) { %>
+        <tr>
+          <td><%= family[i].FirstName %> </td>
+          <td><%= family[i].LastName %> </td>
+          <td><%= family[i].Gender %> </td>
+          <td><%= family[i].DOB %> </td>
+        </tr>
+      <% } %>
+    </table>
+
+    <h3>Add family member</h3>
+
+    <form action="/clients/<%= client.CID %>/fam" method="post">
+      First Name: <input type="text" name="FirstName" /><br>
+      Last Name: <input type="text" name="LastName" /><br>
+      Gender: 
+        <select name="Gender">
+          <option value="m">Male</option>
+          <option value="f">Female</option>
+        </select> <br>
+      Date of Birth: <input type="date" name="DOB" /><br>
+      <input type="hidden" name="ClientID" value="<%=client.CID %>" />
+      <input type="submit" value="Create" /> 
+    </form>
+  <body>
+
+</html>

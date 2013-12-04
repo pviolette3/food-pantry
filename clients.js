@@ -16,15 +16,15 @@ module.exports = function(app, sql) {
                }
             }
         }
+      var insertSql = "INSERT INTO Pickup (ClientID, BagName, Date) SELECT " + params.join(",") + 
+     " FROM dual WHERE NOT EXISTS (SELECT * FROM Pickup WHERE ClientID=" + params[0] 
+      + " AND BagName=" + params[1] + " AND Date=" + params[2] + ");"
 
-        var insertSQL = "INSERT INTO Client (" + attrs.type.join(",") + ") VALUES ("
-        + attrs.values.join(",") + ");";
-
-        sql(insertSQL, function(err, rows) {
-          if(err) throw err;
-          res.send("Nice job " + JSON.stringify(rows));
-        });
-    });
+          sql(insertSQL, function(err, rows) {
+            if(err) throw err;
+            res.send("Nice job " + JSON.stringify(rows));
+          });
+      });
 
     app.get('/clients', function(req, res) {
         sql('SELECT * FROM Client LIMIT 100', function(err, rows, fields) {
@@ -53,6 +53,51 @@ module.exports = function(app, sql) {
           });
     });
 
+    app.get('/clients/:cid/fam/new', function(req, res) {
+        sql('SELECT FirstName, LastName, CID FROM Client WHERE CID="' + req.params.cid + '"',
+         function(err, rows) {
+          if(err) {throw err;}
+          client = rows[0];
+          console.log(client);
+          sql('SELECT * FROM FamilyMember WHERE ClientID="' + client.CID + '";', function(err, rows) {
+            if(err) { throw err; }
+            res.render('clients/family/new' , {family: rows, client: client});
+            });
+          });
+    });
+
+
+    //ADD FAMILY MEMBERS (Figure 8)
+    app.post('/clients/:cid/fam', function(req, res) {
+        var attrs = {type: [], values: []};
+        var valid_names = ['FirstName', 'LastName', 'DOB', 'Gender', 'ClientID'];
+        // see which params they actually passed.
+        for (var param in req.body) {
+            if (req.body.hasOwnProperty(param) 
+                && (valid_names.indexOf(param) > -1)) {
+               attrs.type.push(param);
+               if(req.body[param]) { // Tests for empty string
+                 attrs.values.push('"' + req.body[param] + '"');
+               }else {
+                 attrs.values.push("NULL");
+               }
+            }
+        }
+        var whereClause = "";
+        for(var i = 0; i < attrs.type.length; i++) {
+          if(i > 0) {whereClause += " AND "}
+          whereClause += attrs.type[i] + '=' + attrs.values[i];
+        }
+
+        var insertSql = "INSERT INTO FamilyMember (" + attrs.type.join(',') + 
+          ") SELECT " + attrs.values.join(",") + 
+     " FROM dual WHERE NOT EXISTS (SELECT * FROM FamilyMember WHERE " + whereClause + ");"
+        sql(insertSql, function(err, rows) {
+          if(err) {throw err;}
+          res.redirect('/clients/' + client.CID + '/fam/new');
+        })
+    });
+
     app.get('/clients/:cid/', function(req, res) {
         var cid = req.params.cid;
         console.log(req.params);
@@ -62,4 +107,19 @@ module.exports = function(app, sql) {
             return res.render('clients/show', {client: rows[0]});
         });
     });
+
 };
+/*
+<script>
+  function search() {
+    var string = $('#text').val;
+    clearTimeout(lastTime);
+    lastTime = setTimeout(function() {
+      $.ajax('/search?' + params, function(res) {
+          //update table to only have result
+      });     
+    }, 200); 
+  }
+  <text id='#text'onChange="search()">
+</script>
+*/

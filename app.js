@@ -46,17 +46,6 @@ app.get('/', function(req, res) {
 var clients = require('./clients')
 clients(app, sql);
 
-app.get('/clients/:clientid/fam/new', function(req, res) {
-    req.params.clientid;
-    res.send('form for addding a new family member');
-});
-
-//ADD FAMILY MEMBERS (Figure 8)
-app.post('/clients/:clientid/fam', function(req, res) {
-    // save the family members
-    res.send('updated the client with the family members');
-});
-
 //LOGIN (Figure 1)
 app.get('/login', function(req, res) {
     return res.redirect('/logIn.html');
@@ -294,8 +283,7 @@ app.get('/reports/service/lastMonth', function(req, res)
 });
 
 //GROCERY LIST REPORT (Figure 14)
-app.get('/reports/grocery', function(req, res)
-{
+app.get('/reports/grocery', function(req, res) {
 	sql('CALL GetGroceryList()', function(err, rows, field)
 	{
 		if(err) {throw err;}
