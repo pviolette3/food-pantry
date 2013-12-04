@@ -43,8 +43,8 @@ app.get('/', function(req, res) {
 //Hunger Relief Bag List, Edit Bag, Product List (Search), 
 //New Inventory, Monthly Service Report, Grocery List Report
 
-var clients = require('./clients')
-clients(app, sql);
+require('./clients')(app, sql);
+require('./pickups')(app, sql);
 
 //LOGIN (Figure 1)
 app.get('/login', function(req, res) {
@@ -79,51 +79,7 @@ app.get('/home', function(req, res) {
     return res.redirect('/home.html');
 });
 
-//PICKUPS (Figure 3)
-app.get('/pickups:_day', function(req, res) 
-{
-	var con = dbCon.makeConnection();
-	var day = req.params.day;//document.getElementById('form').value;
-	con.connect();
-	con.query('CALL GetPickupSignIn("' + day + '")',
-			function(err, rows, field)
-			{
-				if(err) { throw err; }
-				res.send(rows);
-			});
-	con.end();
-});
 
-//FAMILY BAG PICKUP (Figure 4)
-app.post('/pickups/:fn--:ln--:tp', function(req, res) {
-    // update db with bag pickup
-	
-	var con = dbCon.makeConnection();
-	
-	var fn = req.params.fn;
-	var ln = req.params.ln;
-	var tp = req.params.tp;
-	
-	var cid;
-	var bagName;
-	
-	sql('CALL GetBagInfoForClient("' + fn + '",  "' + ln + '", "' + tp + '")',
-			function(err, rows, field)
-			{
-				if(err) { throw err; }
-				cid = rows[ClientID];
-				bagName = rows[BagName];
-				
-				res.send(rows);
-			});
-
-	var insertSql = 'INSERT INTO Pickup (ClientID, BagName, Date) ' + 
-		'VALUES ("' + cid + '" + ," + ' + BagName + '", CURDATE());';
-
-	//TODO: call con.query on the above insertSql when the pickup bag button is pressed
-	
-
-});
 
 //COMPLETE DROP OFF (Figure 5)
 app.post('/dropoffs', function(req, res) {
