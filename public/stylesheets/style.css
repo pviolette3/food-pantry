@@ -4,7 +4,7 @@ body {
   font-size: 14px
   font-family: arial, helvetica, sans-serif
   color: #0073FF;
-  background-color: #000000;
+  background-color: #242424;
 }
 
 p {
@@ -22,11 +22,13 @@ legend {
 }
 
 h1 {
+    color: #0073FF;
     font-size: 2em;
     text-shadow:5px 5px 5px #243959;
 }
 
 h2 {
+    color: #0073FF
     font-size: 1.5em;
 }
 a {
