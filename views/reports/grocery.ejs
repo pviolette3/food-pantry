@@ -1,0 +1,17 @@
+<html>
+
+	<a href = "/reports/service">Service Report</a>
+	<body>
+		<table border = "1">
+		<tr>
+			<td>Product					</td>
+			<td>Quantity				</td>
+			<td>Last Month Quantity		</td>
+		</tr>
+		<% for (var i in arr) { %>
+			<tr>		
+				<% for(var j = 0; j < val.length; j++) { %> <td> <%= arr[i][val[j]] %> </td> <% } }%>
+			</tr>
+		</table>
+	</body>
+</html>

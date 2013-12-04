@@ -291,9 +291,25 @@ app.get('/products', function(req, res) {
 });
 
 //MONTHLY SERVICE REPORT (Figure 13)
-app.get('/reports/service', function(req, res) 
+app.get('/reports/serviceThisMonth', function(req, res) 
 {
-	sql('CALL GetMonthlyServiceReport()', function(err, rows, field)
+	sql('CALL GetMonthlyServiceReport(CURDATE())', function(err, rows, field)
+			{
+				if(err) { throw err; }
+				console.log(rows[0]);
+				
+				var valid = ["Week", "Households", "UnderEighteen", "EighteenToSixtyFour",
+				             "SixtyFiveAndUp", "TotalPeople", "Week", "FoodCost"];
+
+				res.render('reports/service', {arr : rows[0], val : valid} );
+				res.send(rows);
+			});		
+});
+
+//MONTHLY SERVICE REPORT (Figure 13)
+app.get('/reports/serviceLastMonth', function(req, res) 
+{
+	sql('CALL GetMonthlyServiceReport(SELECT DateAdd(month, -1, Convert(date, GetDate()));)', function(err, rows, field)
 			{
 				if(err) { throw err; }
 				console.log(rows[0]);
@@ -307,6 +323,18 @@ app.get('/reports/service', function(req, res)
 			
 });
 
+//GROCERY LIST REPORT (Figure 14)
+app.get('/reports/grocery', function(req, res)
+{
+	sql('CALL GetGroceryList()', function(err, rows, field)
+	{
+		if(err) {throw err;}
+		var valid = ["ProdName", "DropoffThisMonth", "DropoffLastMonth"];
+		
+		res.render('reports/grocery', {arr : rows[0], val : valid});
+
+	});
+});	
 
 app.get('/bags', function(req, res) {
 	

@@ -1,10 +1,24 @@
 <html>
+
+	<a href = "/reports/grocery">Grocery Report</a>
+	<a href = "/reports/serviceThisMonth">Service Report (This month)</a>
+	<a href = "/reports/serviceLastMonth">Service Report (Last month)</a>
 	<body>
 		<table border = "1">
+		<tr>
+			<td>Week					</td>
+			<td>Number of Households	</td>
+			<td>Under 18 Years			</td>
+			<td>18 to 64 Years			</td>
+			<td>65 years and older		</td>
+			<td>Total people			</td>
+			<td>Total food cost (in USD)</td>
+		</tr>
+		
 		<% for (var i in arr) { %>
 			<tr>		
-				<% for(var j in arr[i]) { %> <td> <%= arr[i][val[j]] %> </td> <% } }%>
+				<% for(var j = 0; j < val.length; j++) { %> <td> <%= arr[i][val[j]] %> </td> <% } }%>
 			</tr>
-		<td>
+		</table>
 	</body>
 </html>
