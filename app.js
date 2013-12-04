@@ -45,6 +45,7 @@ app.get('/', function(req, res) {
 
 require('./clients')(app, sql);
 require('./pickups')(app, sql);
+require('./dropoffs')(app, sql);
 
 //LOGIN (Figure 1)
 app.get('/login', function(req, res) {
@@ -79,49 +80,6 @@ app.get('/home', function(req, res) {
     return res.redirect('/home.html');
 });
 
-
-
-//COMPLETE DROP OFF (Figure 5)
-app.post('/dropoffs', function(req, res) {
-		
-	//Get the name of the attributes via the post request
-    var attrs = [ req.body['Product'], req.body['Quantity'], req.body['Source'] ];
-    
-    //The SQL for inserting into dropoff
-    var insertSql = 'INSERT INTO Dropoff (ProdName, Quantity, Date) VALUES ( "' + attrs[0] + '", "' + attrs[1] + '", CURDATE());';
-            
-    sql('SELECT * FROM Product WHERE Name = "' + attrs[0] + '";', function(err, rows, field)
-    		{
-    			if(err) {throw err;}
-    			console.log(rows);
-    			
-    		    sql(insertSql, function(err, rows) {
-    		        if(err) { throw err; }
-    		      });
-    		    
-    		});
-    
-
-
-    res.redirect('/');
-});
-
-//LIST ALL DROPOFF (Figure 5)
-app.get('/dropoffs', function(req, res) 
-{
-	sql('SELECT Name FROM Product', function(err, rows, fields)
-			{
-				if(err) {throw err;}
-				res.render('/clients/newdropoff', {arr : rows});
-			});
-			
-});
-
-app.get('/pickup/new', function(req, res) 
-{
-    res.send('the form to pickup a bag');
-});
-
 //HUNGER RELIEF BAG LIST (Figure 9)
 app.get('/reports/hunger-relief', function(req, res) {
 	
@@ -134,11 +92,10 @@ app.get('/reports/hunger-relief', function(req, res) {
     res.send('hunger relief report');
 });
 
-
-
 app.get('/bags', function(req, res) {
     sql('SELECT * FROM Bag', function(err, rows) {
-        res.render('/bags/list', {bags: rows});
+        if(err) {throw err;}
+        res.render('bags/list', {bags: rows});
     });
 });
 
@@ -249,13 +206,6 @@ app.get('/reports/grocery', function(req, res) {
 
 	});
 });	
-
-
-
-app.put('/bags/:bagname', function(req, res) {
-    // update the bag with new values
-    res.send('your bag was updated');
-});
 
 
 http.createServer(app).listen(app.get('port'), function() {
