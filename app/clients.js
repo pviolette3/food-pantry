@@ -118,10 +118,21 @@ module.exports = function(app, sql) {
     app.get(/^\/clients\/(\d+)/, function(req, res) {
         var cid = req.params[0];
         console.log(req.params);
-        sql('SELECT * FROM Client WHERE CID="' + cid + '";', function(err, rows) {
+        sql('SELECT * FROM Client WHERE CID="' + cid + '";', function(err, row) {
             if(err) {throw err;}
-            console.log(rows);
-            return res.render('clients/show', {client: rows[0]});
+            console.log(row);
+            var rows = row[0];
+            client = 
+            {
+            	Name : rows['FirstName'] + ', ' + rows['LastName'],
+            	Address : rows['Street'] + ' ' + rows['City'] + rows['State'],
+            	Phone : rows['Phone'],
+            	Start : rows['Start'],
+            	BagSignedUp : rows['BagSignedUp'],
+            	PickupDay : rows['PickupDay'],
+            	Start : rows['Start']
+            };
+            return res.render('clients/show', {client: client});
         });
     });
 
