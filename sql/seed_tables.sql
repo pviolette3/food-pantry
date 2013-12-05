@@ -95,7 +95,7 @@ VALUES ('Rita', 'Skeeter', 'Hogwarts', 'Manchester', 'EN', '81039', '5923048000'
 INSERT INTO Client (FirstName, LastName, Street, City, State, Zip, Phone, Start, BagSignedUp, PickupDay, DOB)
 VALUES ('Weasley', 'Arthur', 'The Burrow',  'Devon', 'EN', '80193', '3850382910', CURDATE(), 'Bag 1', 20, '1950-02-06');
 INSERT INTO Client (FirstName, LastName, Street, City, State, Zip, Phone, Start, BagSignedUp, PickupDay, DOB)
-VALUES ('Lovegood', 'Xenophilius', 'Ottery St. Catchpole', 'Devon', 'EN', '81039', '4730193847', 25, 'Bag 1', 20, '1950-11-21');
+VALUES ('Lovegood', 'Xenophilius', 'Ottery St. Catchpole', 'Devon', 'EN', '81039', '4730193847', 25, 'Bag 1', 20, '1950-02-10');
 
 INSERT INTO Client (FirstName, LastName, Street, City, State, Zip, Phone, Start, BagSignedUp, PickupDay, DOB)
 VALUES ('Lupin', 'Remus', 'Wolfshire Rue', 'London', 'EN', '01923', '8476525810', CURDATE(), 'BAG 2', 5, '1955-12-03');
