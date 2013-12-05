@@ -2,9 +2,13 @@ module.exports = function(app, sql) {
     //HUNGER RELIEF BAG LIST (Figure 9)
     app.get('/reports/hunger-relief', function(req, res) {
         
+    	
         sql('CALL GetHungerReliefBagList()', function(err, rows, fields)
         {   
             if(err){throw err;}
+            console.log(rows);
+            var valid = ["BagName", "num_items", "COUNT(c.CID)"]
+            res.render('reports/hungerRelief', {arr : rows[0] , val : valid});
             res.send(rows);
         });
     });
