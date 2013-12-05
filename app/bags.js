@@ -19,21 +19,36 @@ module.exports = function(app, sql) {
                         bags[bagItem.BagName] = [];
                     }
                     bags[bagItem.BagName].push(bagItem);
+                    console.log(rows);
                 }
-                console.log(rows);
                 res.render('bags/bagEdit', {arr : rows});
         });  
     });
     
-    app.post('bags/edit', function(req, res)
+    app.post('/bags/edit/complete', function(req, res)
     		{
-	    
-		    var updateSql = 'UPDATE ' + req.body['Quantity'];
-		            
-		    //sql(updateSql, function(err, rows, field)
-    			   
-    		});
-    
+    		
+    		console.log(req.body['BagName']);
+	    	for(var i = 0; i < req.body['length']; i++)
+	    	{
+	    		if(req.body['ProductName'+i])
+	    		{
+	    			var call = 'CALL UpdateProduct("' + req.body['ProductName'+i] + 
+	    		'", "' + req.body['BagName'] + '", "' + req.body['Quantity'+i] + '");';
+		    		
+	    			sql(call, function(err, rows, field)
+					{
+						if(err){throw err;}
+					});
+	    			
+	    			console.log(call);
+
+	    		}
+	    		
+	    	}
+	    	
+	    	res.redirect('/');
+    	});
 };
 
 

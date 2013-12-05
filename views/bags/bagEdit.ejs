@@ -1,5 +1,8 @@
 <% include ../head %>
-		<form action = "bags/edit" align = "center" method = "post">
+		<form action="/bags/edit/complete" align = "center" method = "post">
+			<input type="hidden" name="BagName" value= "<%=arr[0]['BagName']%>" ></input>
+			<input type="hidden" name="length" value= <%=arr.length%> ></input>
+		
 
 			<table border = "1">
 			<tr>
@@ -10,7 +13,10 @@
 				<tr>
 					<td> <%=arr[i]['ProductName']%> </td>
 					<td> 						
-						Quantity: <input type="text" name="Quantity" value= <%=arr[i]['CurrentMonthQuantity']%> ></input>
+						Quantity: <input type="text" name="Quantity<%=i%>" value= <%=arr[i]['CurrentMonthQuantity']%> ></input>
+						<input type="hidden" name="ProductName<%=i%>" value= <%=arr[i]['ProductName']%> ></input>
+									
+						
 					</td>
 				</tr>
 			<%}%>
