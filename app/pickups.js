@@ -9,7 +9,7 @@ module.exports = function(app, sql) {
             params = [quotes.join(req.body.cid),
                   quotes.join(req.body.bagName),
                   quotes.join(req.body.date)];
-            
+            var insertSql = "CALL InsertPickup(" + params.join(',') + ");" 
             var insertSql = "INSERT INTO Pickup (ClientID, BagName, Date) SELECT " +
             params.join(",") +
             " FROM dual WHERE NOT EXISTS (SELECT * FROM Pickup WHERE ClientID=" + params[0]

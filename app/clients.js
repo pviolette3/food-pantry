@@ -19,7 +19,7 @@ module.exports = function(app, sql) {
      " FROM dual WHERE NOT EXISTS (SELECT * FROM Pickup WHERE ClientID=" + params[0] 
       + " AND BagName=" + params[1] + " AND Date=" + params[2] + ");"
 
-          sql(insertSQL, function(err, rows) {
+          sql(insertSql, function(err, rows) {
             if(err) throw err;
             res.send("Nice job " + JSON.stringify(rows));
           });
