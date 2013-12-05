@@ -157,5 +157,6 @@ INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-17', 12, 'Bag 6')
 -- User
 INSERT INTO User (UserName, Password, Type) VALUES ( 'steve' , '1234', 'v' );
 INSERT INTO User (UserName, Password, Type) VALUES ( 'admin' , 'admin', 'd');
-
+INSERT INTO User (UserName, Password, Type) VALUES ( 'toilet' , 'poop', 'v');
+INSERT INTO User (UserName, Password, Type) VALUES ( 'patrick' , 'star', 'v');
 
