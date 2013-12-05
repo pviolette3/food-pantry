@@ -79,6 +79,11 @@ INSERT INTO Holds (ProductName, BagName,  CurrentMonthQuantity) VALUES ('Blueber
 INSERT INTO Holds (ProductName, BagName,  CurrentMonthQuantity) VALUES ('Milk', 'bag 6', 90);
 INSERT INTO Holds (ProductName, BagName,  CurrentMonthQuantity) VALUES ('Orange Juice', 'bag 6', 14);
 
+INSERT INTO Bag (Name) VALUES ('Bag 7');
+INSERT INTO Holds (ProductName, BagName,  CurrentMonthQuantity) VALUES ('Blueberries', 'bag 7', 6);
+INSERT INTO Holds (ProductName, BagName,  CurrentMonthQuantity) VALUES ('Milk', 'bag 7', 9);
+INSERT INTO Holds (ProductName, BagName,  CurrentMonthQuantity) VALUES ('Orange Juice', 'bag 7', 4);
+
 
 -- Client
 INSERT INTO Client (FirstName, LastName, Street, City, State, Zip, Phone, Start, BagSignedUp, PickupDay, DOB)
