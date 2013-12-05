@@ -17,9 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride()); //for app.put
 app.use(express.bodyParser()); // for getting post params
-
-
-// app.use(middleware.requireLogin);
+app.use(express.cookieParser());
 
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));

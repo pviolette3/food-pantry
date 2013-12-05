@@ -4,7 +4,6 @@ module.exports = function(app, sql) {
         var valid_names = ['BagSignedUp', 'FirstName', 'LastName', 'Phone',
           'Street', 'City', 'State', 'Zip', 'Apt', 'Gender', 'Start', 'PickupDay'];
         // see which params they actually passed.
-        // TODO Validation, bc we are gonna get SQL injected like this
         for (var param in req.body) {
             if (req.body.hasOwnProperty(param) 
                 && (valid_names.indexOf(param) > -1)) {
