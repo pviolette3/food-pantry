@@ -60,12 +60,14 @@ $(function() {
         rows.each(function() {
           var row = $(this);
           row.removeClass('highlight');
-          row.children('td').each(function() {
-            if($(this).html().toLowerCase().indexOf(targetName.toLowerCase()) !== -1) {
-                console.log("GOT ONE: " + $(this).html());
-                row.addClass('highlight');
+          if(targetName) {
+              row.children('td').each(function() {
+                if($(this).html().toLowerCase().indexOf(targetName.toLowerCase()) !== -1) {
+                    console.log("GOT ONE: " + $(this).html());
+                    row.addClass('highlight');
+                }
+              });
             }
-          });
         });
     }
 
