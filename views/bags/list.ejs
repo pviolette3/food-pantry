@@ -2,12 +2,21 @@
 
     <h1>Select a bag to edit</h1>
     
-    <ul>
+    <table>
+    	<tr>
+	    	<td>Bag Name			</td>
+	    	<td>Number of Items		</td>
+	    	<td>Number of Clients	</td>
+    	<tr>
+    	
       <% for(var i = 0; i < bags.length; i++) { %>
-        <li>
-          <a href="/bags/<%= bags[i].Name %>/edit"><%= bags[i].Name %></a>
-        </li>
+      	<tr>
+          	<td><a href="/bags/<%=bags[i]['BagName']%>/edit"><%=bags[i]['BagName']%></a></td>
+          	<td><%=bags[i]['num_items']%></td>
+          	<td><%=bags[i]['COUNT(c.CID)']%></td>
+        </tr>
       <% } %>
-    </ul>
-     
+      
+    </table>
+         
 <% include ../foot %>

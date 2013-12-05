@@ -88,7 +88,7 @@ CREATE TABLE Pickup
 (
   ClientID int NOT NULL,
   BagName varchar(32) NOT NULL,
-  Date date NOT NULL,
+  date tinyint NOT NULL,
   PRIMARY KEY (ClientID, BagName, date),
   FOREIGN KEY (BagName) REFERENCES Bag(Name),
   FOREIGN KEY (ClientID) REFERENCES Client(CID)

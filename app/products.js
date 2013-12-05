@@ -25,7 +25,7 @@ module.exports = function(app, sql) {
         var attrs = [ req.body['Name'], req.body['Cost'], req.body['SourceName'] ];
         
         //The SQL for inserting into dropoff
-        var insertSql = 'INSERT INTO Product (Name, Cost, SourceName) VALUES ( "' + attrs[0] + '", "' + attrs[1] + '", "' + attrs[2] + '");';
+        var insertSql = 'INSERT INTO Product (Name, Cost, SourceName) VALUES ( "' + attrs[0].toLowerCase() + '", "' + attrs[1] + '", "' + attrs[2] + '");';
 
         sql('SELECT * FROM Product WHERE Name = "' + attrs[0] + '";', function(err, rows, field)
                 {

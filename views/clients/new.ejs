@@ -1,18 +1,23 @@
 <% include ../head %>
       <h1>Add a new Client</h1>
       <form action="/clients" method="post">
-        BagSignedUp: <input type="text" name="BagSignedUp"></input><br>
-        FirstName: <input type="text" name="FirstName"></input><br>
-        LastName: <input type="text" name="LastName"></input><br>
-        Phone: <input type="text" name="Phone"></input><br>
+        Bag Signed Up: <select name="BagSignedUp"> 
+        	<%for (var i in arr) {%>
+        		<option value = "<%=arr[i]['Name']%>"><%=arr[i]['Name']%></option>
+        	<%}%>
+   		</select><br>
+   		
+        First Name: <input type="text" name="FirstName"></input><br>
+        Last Name: <input type="text" name="LastName"></input><br>
+        Phone: <input type="tel" name="Phone"></input><br>
         Street: <input type="text" name="Street"></input><br>
         City: <input type="text" name="City"></input><br>
         State: <input type="text" name="State"></input><br>
-        Zip: <input type="text" name="Zip"></input><br>
+        Zip: <input type="number" name="Zip"></input><br>
         Apartment: <input type="text" name="Apt"></input><br>
         Gender: <input type="text" name="Gender"></input><br>
-        Start: <input type="text" name="Start"></input><br>
-        PickupDay: <input type="text" name="PickupDay"></input><br>
+        Start Day: <input type="date" name="Start"></input><br>
+        Pickup Day: <input type="number" name="PickupDay"></input><br>
         <input type="submit" value="Create"></input>
       </form>
 <% include ../foot %>
