@@ -96,6 +96,13 @@ CREATE PROCEDURE GetProductList()
                 FROM Product p LEFT JOIN soclose s ON s.ProdName = p.Name;
     END //
 	
+CREATE PROCEDURE UpdateProduct(IN pn varchar(32), IN bn varchar(32), in newQ int)
+	BEGIN
+		UPDATE Holds
+			SET LastMonthQuantity = CurrentMonthQuantity, CurrentMonthQuantity = newQ
+			WHERE BagName = bn AND ProductName = pn;
+		END //
+	
 CREATE PROCEDURE GetMonthlyServiceReport(IN thisMonth BOOLEAN)
 	BEGIN
 		CREATE TEMPORARY TABLE WeekBags AS SELECT CASE WHEN PickupDay < 7 THEN 1
