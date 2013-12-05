@@ -2,7 +2,7 @@
 
       <h1>Clients for you sir!</h1>
       <a href="/clients/new">Create New Client</a>
-      <h4>Use control f</h4>
+      <h4><a href="/clients/search">Search for client </a></h4>
       <ul>
           <% for(var i=0; i < rows.length; i++) { %>
             <li><a href="/clients/<%= rows[i].CID%>"><%=rows[i].FirstName + " " + rows[i].LastName %></a></li>
