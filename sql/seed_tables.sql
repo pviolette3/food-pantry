@@ -24,29 +24,29 @@ INSERT INTO Product (Name, Cost, SourceName) VALUES ('Gatorade', 1.05, 'Walmart'
 INSERT INTO Product (Name, Cost, SourceName) VALUES ('Smart Water', 2.50, 'Whole Foods');
 
 -- Dropoffs
-INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( CURDATE(), 'Pears', 30);
-INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( CURDATE(), 'chocolate', 100);
-INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( CURDATE(), 'Apples', 40);
-INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( CURDATE(), 'rice', 101);
-INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-30', 'rice', 101);
+INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( CURDATE(), 'Pears', 1000);
+INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( CURDATE(), 'chocolate', 1000);
+INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( CURDATE(), 'Apples', 1135);
+INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( CURDATE(), 'rice', 1000);
+INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-30', 'rice', 1000);
 
 INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-30', 'Ramen noodles', 1000);
-INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-30', 'Penne', 10);
-INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-30', 'Linguini', 20);
-INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-30', 'Macaroni', 30);
-INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-30', 'Shells', 40);
+INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-30', 'Penne', 1000);
+INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-30', 'Linguini', 1000);
+INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-30', 'Macaroni', 1000);
+INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-30', 'Shells', 1000);
 
-INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-27', 'Bananas', 40);
-INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-27', 'Oranges', 35);
-INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-27', 'Mangos', 30);
-INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-27', 'Strawberries', 45);
-INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-27', 'Blueberries', 15);
+INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-27', 'Bananas', 1000);
+INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-27', 'Oranges', 1000);
+INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-27', 'Mangos', 1000);
+INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-27', 'Strawberries', 1000);
+INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-10-27', 'Blueberries', 1000);
 
-INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-11-11', 'Milk', 300);
-INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-11-11', 'Orange Juice', 275);
-INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-11-11', 'Powerade', 165);
-INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-11-11', 'Gatorade', 45);
-INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-11-11', 'Smart Water', 170);
+INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-11-11', 'Milk', 1000);
+INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-11-11', 'Orange Juice', 1000);
+INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-11-11', 'Powerade', 1000);
+INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-11-11', 'Gatorade', 1000);
+INSERT INTO Dropoff (Date, ProdName, Quantity) VALUES ( '2013-11-11', 'Smart Water', 1000);
 
 
 -- Bag

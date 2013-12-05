@@ -5,7 +5,7 @@ module.exports = function(app, sql) {
         sql('CALL GetProductList()',
                 function(err, rows, field) {
                     if(err) { throw err; }
-                    var values = ['Name', 'Cost', 'QuantityOnHand'];
+                    var values = ['Name', 'QuantityOnHand', 'Cost'];
                     res.render('products/productList', {arr : rows[0], val : values});
                     console.log(rows);
                 });

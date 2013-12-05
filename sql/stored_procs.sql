@@ -68,15 +68,23 @@ CREATE PROCEDURE GetBagInfoForClient(IN FirstName varchar(32), IN LastName varch
 
 CREATE PROCEDURE GetProductList()
     BEGIN -- Gives Product List (ProdName, Quantity, Cost per unit)
+        DROP TEMPORARY TABLE IF EXISTS added;
+        DROP TEMPORARY TABLE IF EXISTS gone;
+        DROP TEMPORARY TABLE IF EXISTS loj;
+        DROP TEMPORARY TABLE IF EXISTS roj;
+        DROP TEMPORARY TABLE IF EXISTS foj;
+        DROP TEMPORARY TABLE IF EXISTS almost;
+        DROP TEMPORARY TABLE IF EXISTS soclose;
         CREATE TEMPORARY TABLE added AS (SELECT d.ProdName, SUM(d.Quantity) AS TotalAdded FROM Dropoff d GROUP BY d.ProdName);
         CREATE TEMPORARY TABLE gone AS (SELECT h.ProductName AS ProdName, 
                     SUM(h.CurrentMonthQuantity) AS UsedThisMonth, 
                     SUM(h.LastMonthQuantity) AS UsedLastMonth FROM Pickup p JOIN Holds h ON p.BagName = h.BagName 
                     GROUP BY h.ProductName);
-        CREATE TEMPORARY TABLE loj AS SELECT * FROM added NATURAL LEFT JOIN gone;
+        CREATE TEMPORARY TABLE loj AS SELECT * FROM added NATURAL LEFT OUTER JOIN gone;
+        CREATE TEMPORARY TABLE roj AS SELECT * FROM added NATURAL RIGHT OUTER JOIN gone;
 
-        CREATE TEMPORARY TABLE roj AS SELECT * FROM added NATURAL RIGHT JOIN gone;
-        CREATE TEMPORARY TABLE foj AS SELECT * FROM roj UNION SELECT * FROM loj;
+        CREATE TEMPORARY TABLE foj AS SELECT * FROM loj UNION SELECT * FROM roj;
+
         CREATE TEMPORARY TABLE almost AS SELECT ProdName, SUM(COALESCE(UsedLastMonth, 0)) AS UsedLastMonth,
             SUM(COALESCE(UsedThisMonth, 0)) AS UsedThisMonth, 
             SUM(COALESCE(TotalAdded, 0)) AS TotalAdded FROM
