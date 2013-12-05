@@ -1,5 +1,22 @@
 <% include ../head %>
-    <h1> <%= client.FirstName + " " + client.LastName %> </h1>
+    <h1> <%= client.Name %> </h1>
+   	<table>
+   		<tr>
+   			<td>Name		</td>
+   			<td>Address		</td>
+   			<td>Phone		</td>
+   			<td>Start Date	</td>
+   		</tr>
+   		<%for(var i in client) { %>
+   		<tr>
+   			<td><%=client.Name%></td>
+   			<td><%=client.Address%></td>
+   			<td><%=client.Phone%></td>
+   			<td><%=client.Start%></td>
+   		</tr>
+   		<%}%>
+   	
+   	</table>
     <p>Bag name : <%= client.BagSignedUp %> </p>
     <p> Pickup day: <%= client.PickupDay %> </p>
     <p> Client since : <%= client.Start %> </p>

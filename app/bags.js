@@ -1,10 +1,13 @@
 module.exports = function(app, sql) {
     app.get('/bags', function(req, res) {
-        sql('SELECT * FROM Bag', function(err, rows) {
+        sql('CALL GetHungerReliefBagList();', function(err, rows) {
             if(err) {throw err;}
-            res.render('bags/list', {bags: rows});
+            res.render('bags/list', {bags : rows[0]});
+            console.log(rows);
         });
     });
+    
+    
 
     //EDIT BAG (Figure 10)
     app.get('/bags/:bagname/edit', function(req, res) {

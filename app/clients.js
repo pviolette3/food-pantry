@@ -15,14 +15,23 @@ module.exports = function(app, sql) {
                }
             }
         }
-      var insertSql = "INSERT INTO Pickup (ClientID, BagName, Date) SELECT " + params.join(",") + 
-     " FROM dual WHERE NOT EXISTS (SELECT * FROM Pickup WHERE ClientID=" + params[0] 
-      + " AND BagName=" + params[1] + " AND Date=" + params[2] + ");"
+      var insertSQL = "INSERT INTO Client (" + attrs.type.join(",") + ") VALUES ("
+      +    attrs.values.join(",") + ");";
 
-          sql(insertSql, function(err, rows) {
+          sql(insertSQL, function(err, rows, field) {
             if(err) throw err;
-            res.send("Nice job " + JSON.stringify(rows));
-          });
+            });
+          
+      var red = 'SELECT CID FROM Client WHERE (FirstName = ' + attrs.values[1] + ' AND LastName = ' +
+  		attrs.values[2] + ' AND Phone = ' + attrs.values[3] + ');';
+      var cid = 0;
+          sql(red, function(err, rows, field)
+          		{
+          			cid = rows[0]['CID'];
+                    res.redirect('/clients/' + cid + '/fam');
+          		});
+ 
+
       });
 
     app.get('/clients', function(req, res) {
@@ -33,7 +42,12 @@ module.exports = function(app, sql) {
     });
 
     app.get('/clients/new', function(req, res) {
-        res.render('clients/new');
+    	
+    	sql("SELECT Name FROM Bag", function(err, rows, field)
+    			{
+    				if(err){throw err;}
+    				res.render('clients/new', {arr : rows});    		
+    			});
     });
 
     //CLIENTS (Figure 6)
@@ -104,10 +118,21 @@ module.exports = function(app, sql) {
     app.get(/^\/clients\/(\d+)/, function(req, res) {
         var cid = req.params[0];
         console.log(req.params);
-        sql('SELECT * FROM Client WHERE CID="' + cid + '";', function(err, rows) {
+        sql('SELECT * FROM Client WHERE CID="' + cid + '";', function(err, row) {
             if(err) {throw err;}
-            console.log(rows);
-            return res.render('clients/show', {client: rows[0]});
+            console.log(row);
+            var rows = row[0];
+            client = 
+            {
+            	Name : rows['FirstName'] + ', ' + rows['LastName'],
+            	Address : rows['Street'] + ' ' + rows['City'] + rows['State'],
+            	Phone : rows['Phone'],
+            	Start : rows['Start'],
+            	BagSignedUp : rows['BagSignedUp'],
+            	PickupDay : rows['PickupDay'],
+            	Start : rows['Start']
+            };
+            return res.render('clients/show', {client: client});
         });
     });
 

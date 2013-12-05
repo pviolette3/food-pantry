@@ -18,7 +18,7 @@ module.exports = function(app, sql) {
 
         sql(insertSql, function(err, rows) {
             if(err) {throw err;}
-            res.redirect('/home');
+            res.redirect('/pickups');
         });
     });
 
