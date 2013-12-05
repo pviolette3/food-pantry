@@ -22,7 +22,7 @@ module.exports = function(app, sql) {
                     console.log(rows[0]);
                     
                     var valid = ["Week", "Households", "UnderEighteen", "EighteenToSixtyFour",
-                                 "SixtyFiveAndUp", "TotalPeople", "Week", "FoodCost"];
+                                 "SixtyFiveAndUp", "TotalPeople", "FoodCost"];
 
                     res.render('reports/service', {arr : rows[0], val : valid} );
                 });     
@@ -37,7 +37,7 @@ module.exports = function(app, sql) {
                     console.log(rows[0]);
                     
                     var valid = ["Week", "Households", "UnderEighteen", "EighteenToSixtyFour",
-                                 "SixtyFiveAndUp", "TotalPeople", "Week", "FoodCost"];
+                                 "SixtyFiveAndUp", "TotalPeople", "FoodCost"];
 
                     res.render('reports/service', {arr : rows[0], val : valid} );
                 });
