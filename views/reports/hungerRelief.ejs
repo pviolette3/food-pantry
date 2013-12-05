@@ -1,0 +1,15 @@
+<% include ../head %>
+		<table border = "1">		
+			<tr>
+				<td>Bag Name					</td>
+				<td>Number of Items				</td>
+				<td>Number of Subscribed Clients</td>
+			</tr>
+			
+			<% for (var i in arr) { %>
+			<tr>		
+				<% for(var j = 0; j < val.length; j++) { %> <td> <%= arr[i][val[j]] %> </td> <% } }%>
+			</tr>						
+		
+		</table>
+<% include ../foot %>

@@ -1,0 +1,21 @@
+<% include ../head %>
+		<form action = "bags/edit" align = "center" method = "post">
+
+			<table border = "1">
+			<tr>
+				<td>Product					</td>
+				<td>Quantity				</td>
+			</tr>
+			<% for (var i in arr) { %>
+				<tr>
+					<td> <%=arr[i]['ProductName']%> </td>
+					<td> 						
+						Quantity: <input type="text" name="Quantity" value= <%=arr[i]['CurrentMonthQuantity']%> ></input>
+					</td>
+				</tr>
+			<%}%>
+			</table>
+		
+		<input type="submit" value="Update"></input>
+		</form>
+<% include ../foot %>

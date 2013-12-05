@@ -12,14 +12,33 @@ module.exports = function(app, sql) {
             function(err, rows, field) {
                 if(err) { throw err; }
                 bags = {};
+                
                 for(var i = 0; i < rows.length; i++) {
                     bagItem = rows[i];
                     if(!bags[bagItem.BagName]) {
-                        bags[bagItem.BagName] = []
+                        bags[bagItem.BagName] = [];
                     }
                     bags[bagItem.BagName].push(bagItem);
                 }
-                res.send(bags);
+                console.log(rows);
+                res.render('bags/bagEdit', {arr : rows});
         });  
     });
+    
+    app.post('bags/edit', function(req, res)
+    		{
+	    
+    			    //The SQL for inserting into dropoff
+    			    //var updateSql = 'UPDATE ' + req.body['Quantity'];
+    			            
+    			    //sql(updateSql, function(err, rows, field)
+    			   
+    		});
+    
 };
+
+
+
+		
+		
+		
