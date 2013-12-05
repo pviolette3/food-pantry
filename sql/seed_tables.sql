@@ -92,7 +92,7 @@ INSERT INTO Client (FirstName, LastName, Street, City, State, Zip, Phone, Start,
 VALUES ('Joe', 'Schmoe', '123 easy street', 'Menlo Park', 'CA', '12345', '1926874902', CURDATE(), 'Bag 1', 10, '1984-06-12');
 
 INSERT INTO Client (FirstName, LastName, Street, City, State, Zip, Phone, Start, BagSignedUp, PickupDay, DOB)
-VALUES ('Rita', 'Skeeter', 'Hogwarts', 'Manchester', 'EN', '81039', '5923048000', CURDATE(), 'Bag 2', 10, '1990-08-30');
+VALUES ('Rita', 'Skeeter', 'Hogwarts', 'Manchester', 'EN', '81039', '5923048000', CURDATE(), 'Bag 2', 6, '1990-08-30');
 INSERT INTO Client (FirstName, LastName, Street, City, State, Zip, Phone, Start, BagSignedUp, PickupDay, DOB)
 VALUES ('Weasley', 'Arthur', 'The Burrow',  'Devon', 'EN', '80193', '3850382910', CURDATE(), 'Bag 2', 15, '1950-02-06');
 
@@ -146,17 +146,45 @@ INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('A
 -- Pickups
 INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-5', 1, 'Bag 1');
 INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-10', 2, 'Bag 1');
-INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-10', 3, 'Bag 2');
-INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-15', 4, 'Bag 2');
-INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-20', 5, 'Bag 3');
-INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-25', 6, 'Bag 3');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-15', 3, 'Bag 1');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-20', 4, 'Bag 1');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-25', 5, 'Bag 1');
 
-INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-30', 7, 'Bag 4');
-INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-2', 8, 'Bag 4');
-INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-7', 9, 'Bag 5');
-INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-12', 10, 'Bag 5');
-INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-15', 11, 'Bag 6');
-INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-17', 12, 'Bag 6');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-5', 6, 'Bag 2');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-10', 7, 'Bag 2');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-15', 8, 'Bag 2');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-20', 9, 'Bag 2');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-25', 10, 'Bag 2');
+
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-5', 11, 'Bag 3');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-10', 12, 'Bag 3');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-15', 13, 'Bag 3');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-20', 14, 'Bag 3');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-25', 15, 'Bag 3');
+
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-5', 16, 'Bag 4');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-10', 17, 'Bag 4');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-15', 18, 'Bag 4');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-20', 19, 'Bag 4');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-25', 20, 'Bag 4');
+
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-5', 21, 'Bag 5');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-10', 22, 'Bag 5');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-15', 23, 'Bag 5');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-20', 24, 'Bag 5');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-25', 25, 'Bag 5');
+
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-5', 26, 'Bag 6');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-10', 27, 'Bag 6');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-15', 28, 'Bag 6');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-20', 29, 'Bag 6');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-25', 30, 'Bag 6');
+
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-5', 31, 'Bag 7');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-10', 32, 'Bag 7');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-15', 33, 'Bag 7');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-20', 34, 'Bag 7');
+INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-25', 35, 'Bag 7');
 
 
 -- User
