@@ -82,7 +82,7 @@ INSERT INTO Holds (ProductName, BagName,  CurrentMonthQuantity) VALUES ('Orange 
 
 -- Client
 INSERT INTO Client (FirstName, LastName, Street, City, State, Zip, Phone, Start, BagSignedUp, PickupDay, DOB)
-VALUES ('Mary', 'Smith', '300 North Side Dr', 'Atlanta', 'GA', '30332', '4043351122', CURDATE(), 'Bag 1', 5, '1958-12-01');
+VALUES ('Mary', 'Smith', '300 North Side Dr', 'Atlanta', 'GA', '30332', '4043351122', CURDATE(), 'bag 1', 5, '1958-12-01');
 INSERT INTO Client (FirstName, LastName, Street, City, State, Zip, Phone, Start, BagSignedUp, PickupDay, DOB)
 VALUES ('Joe', 'Schmoe', '123 easy street', 'Menlo Park', 'CA', '12345', '1926874902', CURDATE(), 'Bag 1', 10, '1984-06-12');
 
@@ -97,7 +97,7 @@ INSERT INTO Client (FirstName, LastName, Street, City, State, Zip, Phone, Start,
 VALUES ('Lupin', 'Remus', 'Wolfshire Rue', 'London', 'EN', '01923', '8476525810', CURDATE(), 'BAG 3', 25, '1955-12-03');
 
 INSERT INTO Client (FirstName, LastName, Street, City, State, Zip, Phone, Start, BagSignedUp, PickupDay, DOB)
-VALUES ('Potter', 'James', 'Godric's Hollow', 'Surrey', 'EN', '39087', '6886532456', CURDATE(), 'BAG 4', 30, '1947-11-01');
+VALUES ('Potter', 'James', "Godric's Hollow", 'Surrey', 'EN', '39087', '6886532456', CURDATE(), 'BAG 4', 30, '1947-11-01');
 INSERT INTO Client (FirstName, LastName, Street, City, State, Zip, Phone, Start, BagSignedUp, PickupDay, DOB)
 VALUES ('Dursley', 'Vernon', '4 Privet Drive', 'Little Whinging', 'EN', '30298', '2819304765', CURDATE(), 'BAG 4', 2, '1963-11-16');
 
@@ -109,9 +109,9 @@ VALUES ('Delacoeur', 'Fleur', 'Rue de Lilly', 'Paris', 'FR', '46296', '467384590
 
 
 INSERT INTO Client (FirstName, LastName, Street, City, State, Zip, Phone, Start, BagSignedUp, PickupDay, DOB)
-VALUES ('Diggory', 'Amos', 'Ottery St. Catchpole', 'Devon', 'EN', '81039', '7109287354', CURDATE(), 'BAG ', 17, '1958-01-09');
+VALUES ('Diggory', 'Amos', 'Ottery St. Catchpole', 'Devon', 'EN', '81039', '7109287354', CURDATE(), 'BAG 4', 17, '1958-01-09');
 INSERT INTO Client (FirstName, LastName, Street, City, State, Zip, Phone, Start, BagSignedUp, PickupDay, DOB)
-VALUES ('Dumbledore', 'Aberfoth', 'Hogshead Inn', 'Hogsmeade', 'EN', '52436', '2208897564', CURDATE(), 'BAG ', 22, '1879-03-03');
+VALUES ('Dumbledore', 'Aberfoth', 'Hogshead Inn', 'Hogsmeade', 'EN', '52436', '2208897564', CURDATE(), 'BAG 2', 22, '1879-03-03');
 
 -- Family members
 INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Sue', 'Schmoe', 1, '2000-11-12', 'f');
@@ -120,6 +120,7 @@ INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('M
 INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Bill', 'Weasley', 4, '1970-11-29', 'm');
 INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Charlie', 'Weasley', 4, '1972-12-12', 'm');
 
+SELECT "2";
 INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Percy', 'Weasley', 4, '1976-08-22', 'm');
 INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Fred', 'Weasley', 4, '1978-04-01', 'm');
 INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('George', 'Weasley', 4, '1978-04-01', 'm');
@@ -132,11 +133,11 @@ INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('L
 INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Harry', 'Potter', 7, '1960-07-31', 'm');
 INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Petunia', 'Dursley', 8, '1962-05-17', 'f');
 
-INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Dudley', 'Dursley', '1980-06-23', 8, 'm');
-INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Monica', 'Wilkins', '1963-08-14', 9,);
+INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Dudley', 'Dursley',  8, '1980-06-23', 'm');
+INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Monica', 'Wilkins',  9, '1963-08-14', 'f');
 INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Gabrielle', 'Delacour', 10, '1986-04-18', 'f');
-INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Cedric', 'Diggory', 11, '1977-10-31', 'm');
-INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Albus', 'Dumbledore', 12, '1881-06-03', 'm');
+INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Cedric', 'Diggory', 3, '1977-10-31', 'm');
+INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Albus', 'Dumbledore', 2, '1881-06-03', 'm');
 
 -- Pickups
 INSERT INTO Pickup (Date, ClientID, BagName) VALUES ( '2013-10-5', 1, 'Bag 1');

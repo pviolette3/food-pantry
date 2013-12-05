@@ -1,5 +1,5 @@
 module.exports = function(app, sql) {
-    app.post('/clients/', function(req, res) {
+    app.post('/clients', function(req, res) {
         var attrs = {type: [], values: []};
         var valid_names = ['BagSignedUp', 'FirstName', 'LastName', 'Phone',
           'Street', 'City', 'State', 'Zip', 'Apt', 'Gender', 'Start', 'PickupDay'];
@@ -98,8 +98,8 @@ module.exports = function(app, sql) {
         })
     });
 
-    app.get('/clients/:cid/', function(req, res) {
-        var cid = req.params.cid;
+    app.get(/^\/clients\/(\d+)/, function(req, res) {
+        var cid = req.params[0];
         console.log(req.params);
         sql('SELECT * FROM Client WHERE CID="' + cid + '";', function(err, rows) {
             if(err) {throw err;}
@@ -109,6 +109,7 @@ module.exports = function(app, sql) {
     });
 
 };
+
 /*
 <script>
   function search() {
