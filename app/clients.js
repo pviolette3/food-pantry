@@ -102,7 +102,7 @@ module.exports = function(app, sql) {
         }
         var whereClause = "";
         for(var i = 0; i < attrs.type.length; i++) {
-          if(i > 0) {whereClause += " AND "}
+          if(i > 0) {whereClause += " AND ";}
           whereClause += attrs.type[i] + '=' + attrs.values[i];
         }
 
@@ -112,7 +112,7 @@ module.exports = function(app, sql) {
         sql(insertSql, function(err, rows) {
           if(err) {throw err;}
           res.redirect('/clients/' + client.CID + '/fam/new');
-        })
+        });
     });
 
     app.get(/^\/clients\/(\d+)/, function(req, res) {
@@ -130,7 +130,8 @@ module.exports = function(app, sql) {
             	Start : rows['Start'],
             	BagSignedUp : rows['BagSignedUp'],
             	PickupDay : rows['PickupDay'],
-            	Start : rows['Start']
+            	Start : rows['Start'],
+            	CID : rows['CID']
             };
             return res.render('clients/show', {client: client});
         });
