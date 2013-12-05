@@ -45,6 +45,10 @@ border-color:#0073FF;
 background-color:white;
 }
 
+.highlight td, tr {
+  background-color:yellow;
+}
+
 table a {
   color: #000000;
 }

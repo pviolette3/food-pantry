@@ -46,8 +46,34 @@ $(function() {
         console.log("Searching!!");
         $('#searchResults').html('Searching...');
         clearInterval(lastTimeout);
-        setTimeout(doAjax, 200);
+        lastTimeout = setTimeout(doAjax, 200);
     }
     $('#clientName').keyup(searchTypeListener);
     $('#clientPhone').keyup(searchTypeListener);
+    
+
+    function refreshHighlightTable() {
+        var rows = $("#productTable tr:gt(0)"); 
+        var targetName = $('#productSearch').val();
+        console.log("REFRESH highlight, looking for " + targetName);
+
+        rows.each(function() {
+          var row = $(this);
+          row.removeClass('highlight');
+          row.children('td').each(function() {
+            if($(this).html().toLowerCase().indexOf(targetName.toLowerCase()) !== -1) {
+                console.log("GOT ONE: " + $(this).html());
+                row.addClass('highlight');
+            }
+          });
+        });
+    }
+
+    var lastProdTimeout;
+    function productSearchTypeListener() {
+        clearInterval(lastProdTimeout);
+        lastProdTimeout = setTimeout(refreshHighlightTable, 200);  
+    }
+
+    $('#productSearch').keyup(productSearchTypeListener);
 });
