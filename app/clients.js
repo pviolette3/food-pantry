@@ -57,7 +57,7 @@ module.exports = function(app, sql) {
         }
     });
 
-    app.get('/clients/:cid/fam/new', function(req, res) {
+    app.get('/clients/:cid/fam', function(req, res) {
         sql('SELECT FirstName, LastName, CID FROM Client WHERE CID="' + req.params.cid + '"',
          function(err, rows) {
           if(err) {throw err;}
@@ -113,18 +113,3 @@ module.exports = function(app, sql) {
     });
 
 };
-
-/*
-<script>
-  function search() {
-    var string = $('#text').val;
-    clearTimeout(lastTime);
-    lastTime = setTimeout(function() {
-      $.ajax('/search?' + params, function(res) {
-          //update table to only have result
-      });     
-    }, 200); 
-  }
-  <text id='#text'onChange="search()">
-</script>
-*/
