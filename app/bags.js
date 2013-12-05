@@ -27,8 +27,7 @@ module.exports = function(app, sql) {
     
     app.post('bags/edit', function(req, res)
     		{
-
-    			    
+	    
     			    //The SQL for inserting into dropoff
     			    //var updateSql = 'UPDATE ' + req.body['Quantity'];
     			            
