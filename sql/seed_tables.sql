@@ -116,7 +116,7 @@ VALUES ('Dumbledore', 'Aberfoth', 'Hogshead Inn', 'Hogsmeade', 'EN', '52436', '2
 -- Family members
 INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Sue', 'Schmoe', 1, '2000-11-12', 'f');
 INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Steve', 'Young', 1, '1990-03-14', 'm');
-INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Molly', 'Weasley', 4, '1949-10-30, 'f');
+INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Molly', 'Weasley', 4, '1949-10-30', 'f');
 INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Bill', 'Weasley', 4, '1970-11-29', 'm');
 INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Charlie', 'Weasley', 4, '1972-12-12', 'm');
 
