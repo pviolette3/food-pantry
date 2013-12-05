@@ -120,7 +120,6 @@ INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('M
 INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Bill', 'Weasley', 4, '1970-11-29', 'm');
 INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Charlie', 'Weasley', 4, '1972-12-12', 'm');
 
-SELECT "2";
 INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Percy', 'Weasley', 4, '1976-08-22', 'm');
 INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('Fred', 'Weasley', 4, '1978-04-01', 'm');
 INSERT INTO FamilyMember (FirstName, LastName, ClientID, DOB, Gender) VALUES ('George', 'Weasley', 4, '1978-04-01', 'm');

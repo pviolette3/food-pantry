@@ -19,7 +19,6 @@ module.exports = function(app, sql) {
                     }
                     bags[bagItem.BagName].push(bagItem);
                 }
-                console.log(bags);
                 res.send(bags);
         });  
     });

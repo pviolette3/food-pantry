@@ -39,18 +39,22 @@ module.exports = function(app, sql) {
 
     //CLIENTS (Figure 6)
     app.get('/clients/search', function(req, res) {
-        var cn = req.query.name;
-        var tp = req.query.phone;
-        if(!cn)
-          cn = "";
-        if(!tp)
-          tp = "";
-        
-          sql('CALL GetFamilyInfoBySearch("' + cn + '", "' + tp + '");',  
-          function(err, rows, fields) {
-            if(err) {throw err;}
-            res.send(rows[0]);
-          });
+        if(req.query.hasOwnProperty('name') || req.query.hasOwnProperty('phone')) {
+          var cn = req.query.name;
+          var tp = req.query.phone;
+          if(!cn)
+            cn = "";
+          if(!tp)
+            tp = "";
+          
+            sql('CALL GetFamilyInfoBySearch("' + cn + '", "' + tp + '");',  
+            function(err, rows, fields) {
+              if(err) {throw err;}
+              res.send(rows[0]);
+            });
+        }else {
+            res.render('clients/search');
+        }
     });
 
     app.get('/clients/:cid/fam/new', function(req, res) {
